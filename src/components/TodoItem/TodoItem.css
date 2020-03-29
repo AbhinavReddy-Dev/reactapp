@@ -1,0 +1,15 @@
+li {
+  /* height: 2vh; */
+  align-self: center;
+  padding: 0.3vh 1vw;
+  margin: 1vh auto;
+  font-size: x-large;
+  font-weight: normal;
+  cursor: pointer;
+  color: black;
+}
+
+.todo-item-done {
+  border-left: green 6px solid;
+  text-decoration: line-through;
+}
