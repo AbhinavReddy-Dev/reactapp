@@ -1,21 +1,39 @@
 import React, { useState } from "react";
 import "./AddTodo.css";
+import { useDispatch } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
 
 export const AddTodo = () => {
-  const [todo, setTodo] = useState("");
+  const [name, setName] = useState("");
   const [priority, setpriority] = useState(undefined);
+  const dispatch = useDispatch();
   const handleSubmit = e => {
     e.preventDefault();
+    console.log(name, priority);
+    const newTodo = {
+      id: uuidv4(),
+      name,
+      priority: +priority,
+      checked: false,
+      date: Date.now
+    };
+    console.log(newTodo);
+    dispatch({
+      type: "TODO_ADD",
+      payload: newTodo
+    });
+    setName("");
+    setpriority("");
   };
 
   return (
     <div>
-      <form className="todo-add" onSubmit={() => handleSubmit}>
+      <form className="todo-add" onSubmit={handleSubmit}>
         <input
           className="input"
           placeholder="Enter the Todo"
-          value={todo}
-          onChange={e => setTodo(e.target.value)}
+          value={name}
+          onChange={e => setName(e.target.value)}
         ></input>
         <select value={priority} onChange={e => setpriority(e.target.value)}>
           <option>Task Priority</option>

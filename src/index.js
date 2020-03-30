@@ -3,11 +3,19 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import { createStore, combineReducers } from "redux";
 import { Provider } from "react-redux";
-import todos from "../src/Reducers/todos";
+import todos_Reducer from "./Actions_Reducers/todos_Reducer";
 
-const allReducers = combineReducers({ todos });
+export const InitialState = {
+  todos: [],
+  error: null,
+  loading: undefined
+};
 
-const store = createStore(todos);
+console.log(InitialState);
+// const allReducers = combineReducers({ todos });
+
+const store = createStore(todos_Reducer);
+
 ReactDOM.render(
   <Provider store={store}>
     <App />
