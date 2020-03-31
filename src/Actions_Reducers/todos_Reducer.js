@@ -1,7 +1,7 @@
 import { InitialState } from "../index";
 
 export default (state = InitialState, action) => {
-  console.log("after del", state);
+  // console.log("after del", state);
 
   switch (action.type) {
     case "TODO_ADD":
@@ -10,7 +10,7 @@ export default (state = InitialState, action) => {
         todos: [...state.todos, action.payload]
       };
     case "TODO_DONE":
-      console.log(state, action);
+      // console.log(state, action);
       const tempTodos = state.todos.filter(
         todo => todo.id !== action.payload.id
       );
@@ -30,10 +30,11 @@ export default (state = InitialState, action) => {
         todos: tempTodos
       };
     case "TODO_DELETE":
-      console.log("from del");
+      console.log("todo del");
+      console.log(action.payload);
       return {
         ...state,
-        todos: state.todos.filter(todo => todo.name !== action.payload.name)
+        todos: state.todos.filter(todo => todo.name !== action.payload)
       };
     case "ERROR_TODO":
       return {

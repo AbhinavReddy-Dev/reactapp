@@ -3,12 +3,27 @@ import { TodoItem } from "../TodoItem/TodoItem";
 import "./TodoList.css";
 import { useSelector } from "react-redux";
 import { todo_done } from "../../Actions_Reducers/todos_Actions";
+import { store } from "../../index";
 
 export const TodoList = () => {
-  const todos = useSelector(state => state.todos);
-  console.log(todos);
-  const todosDone = todos.filter(todo => todo.checked === true);
-  const todosCurrent = todos.filter(todo => todo.checked !== true);
+  const initialTodos = useSelector(state => state.todos);
+  const [todos, setTodos] = useState(initialTodos);
+  const [todosDone, settodosDone] = useState(
+    todos.filter(todo => todo.checked === true)
+  );
+  const [todosCurrent, settodosCurrent] = useState(
+    todos.filter(todo => todo.checked !== true)
+  );
+  store.subscribe(() => {
+    const todos = store.getState().todos;
+    console.log("from todolist subscription ", todos);
+    setTodos(todos);
+    settodosDone(todos.filter(todo => todo.checked === true));
+    settodosCurrent(todos.filter(todo => todo.checked !== true));
+  });
+  // console.log(todos);
+  // const todosDone = todos.filter(todo => todo.checked === true);
+  // const todosCurrent = todos.filter(todo => todo.checked !== true);
 
   return (
     <div className="todo-list">
@@ -18,7 +33,7 @@ export const TodoList = () => {
         {todosDone.length > 0 ? (
           <ul>
             {todosDone.map(todo => (
-              <TodoItem key={todo.date} todo={todo} />
+              <TodoItem key={todo.id} todo={todo} />
             ))}
           </ul>
         ) : (
@@ -30,7 +45,7 @@ export const TodoList = () => {
         {todosCurrent.length > 0 ? (
           <ul>
             {todosCurrent.map(todo => (
-              <TodoItem key={todo.date} todo={todo} />
+              <TodoItem key={todo.id} todo={todo} />
             ))}
           </ul>
         ) : (

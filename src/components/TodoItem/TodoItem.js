@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import "./TodoItem.css";
-import { todo_done } from "../../Actions_Reducers/todos_Actions";
+// import { todo_done } from "../../Actions_Reducers/todos_Actions";
 import { useDispatch } from "react-redux";
 
 export const TodoItem = ({ todo }) => {
   console.log(todo);
-  const [Todo, setTodo] = useState(todo);
+
+  // const [Todo, setTodo] = useState(todo);
   let textColor;
   if (todo.priority === 1) {
     textColor = "red 4px solid";
@@ -33,18 +34,17 @@ export const TodoItem = ({ todo }) => {
       type: "TODO_DELETE",
       payload: todo.name
     });
-    setTodo(null);
   };
   return (
-    <li
-      className={todo.checked ? "todo-item-done" : null}
-      style={{ borderLeft: textColor }}
-      onClick={onDone}
-    >
-      {todo.name}{" "}
-      <span onClick={onDelete}>
-        <button>X</button>
-      </span>
-    </li>
+    <div className="todo-item">
+      <li
+        className={todo.checked ? "todo-item-done" : null}
+        style={{ borderLeft: textColor }}
+        onClick={onDone}
+      >
+        {todo.name}{" "}
+      </li>
+      <button onClick={onDelete}>X</button>
+    </div>
   );
 };

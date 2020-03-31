@@ -1,14 +1,20 @@
+.todo-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 li {
   /* height: 2vh; */
   /* align-self: center; */
-  padding: 0 0.7vh;
-  margin: 1.1vh auto;
+  padding: 0 0 0 1vw;
+  margin: 1vh 0 0 0;
   font-size: 22px;
   font-weight: normal;
   cursor: pointer;
   color: darkslategrey;
-  display: flex;
-  justify-content: space-between;
+  align-self: flex-start;
   position: relative;
   /* border-left:  4px solid; */
 }
@@ -17,19 +23,20 @@ li {
   /* border-left: green 6px solid; */
   text-decoration: line-through;
 }
-li button {
-  opacity: 0;
-  align-self: flex-end;
-  z-index: 2;
-}
-
-li:hover button {
-  opacity: 1;
+.todo-item button {
+  opacity: 0.3;
+  margin-top: 1vh;
+  align-items: center;
   cursor: pointer;
   color: aliceblue;
   background-color: red;
-  font-size: small;
+  font-size: medium;
   margin-left: 20px;
   padding: 2px 6px;
   border-radius: 20px;
+  z-index: 2;
+}
+
+.todo-item button:hover {
+  opacity: 1;
 }

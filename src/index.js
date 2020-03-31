@@ -14,7 +14,7 @@ export const InitialState = {
 console.log(InitialState);
 // const allReducers = combineReducers({ todos });
 
-const store = createStore(todos_Reducer);
+export const store = createStore(todos_Reducer);
 
 ReactDOM.render(
   <Provider store={store}>

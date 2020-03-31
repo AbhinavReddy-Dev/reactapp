@@ -17,7 +17,7 @@ export const AddTodo = () => {
       checked: false,
       date: Date.now
     };
-    console.log(newTodo);
+    console.log("new todo", newTodo);
     dispatch({
       type: "TODO_ADD",
       payload: newTodo
