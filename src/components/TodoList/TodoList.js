@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { TodoItem } from "../TodoItem/TodoItem";
 import "./TodoList.css";
 import { useSelector } from "react-redux";
-import { todo_done } from "../../Actions_Reducers/todos_Actions";
 import { store } from "../../index";
 
 export const TodoList = () => {
@@ -21,10 +20,6 @@ export const TodoList = () => {
     settodosDone(todos.filter(todo => todo.checked === true));
     settodosCurrent(todos.filter(todo => todo.checked !== true));
   });
-  // console.log(todos);
-  // const todosDone = todos.filter(todo => todo.checked === true);
-  // const todosCurrent = todos.filter(todo => todo.checked !== true);
-
   return (
     <div className="todo-list">
       <div>
@@ -55,3 +50,5 @@ export const TodoList = () => {
     </div>
   );
 };
+
+// export default graphql(TodosQuery)(TodoList);

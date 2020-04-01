@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import "./AddTodo.css";
 import { useDispatch } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
+import { AddTodoQuery } from "../../Queries/queries";
+import { useMutation } from "@apollo/react-hooks";
 
 export const AddTodo = () => {
   const [name, setName] = useState("");
   const [priority, setpriority] = useState(undefined);
   const dispatch = useDispatch();
+  const [addTodo] = useMutation(AddTodoQuery);
   const handleSubmit = e => {
     e.preventDefault();
+    addTodo({
+      variables: {
+        name,
+        priority: +priority
+      }
+    });
     console.log(name, priority);
     const newTodo = {
-      id: uuidv4(),
       name,
       priority: +priority,
       checked: false,

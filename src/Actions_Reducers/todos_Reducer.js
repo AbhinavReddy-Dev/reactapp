@@ -4,6 +4,11 @@ export default (state = InitialState, action) => {
   // console.log("after del", state);
 
   switch (action.type) {
+    case "TODO_LIST":
+      return {
+        ...state,
+        todos: action.payload
+      };
     case "TODO_ADD":
       return {
         ...state,

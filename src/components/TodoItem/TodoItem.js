@@ -1,12 +1,18 @@
 import React, { useState } from "react";
 import "./TodoItem.css";
-// import { todo_done } from "../../Actions_Reducers/todos_Actions";
 import { useDispatch } from "react-redux";
+import {
+  CheckTodoQuery,
+  DeleteTodoQuery,
+  TodosQuery
+} from "../../Queries/queries";
+import { useMutation } from "@apollo/react-hooks";
 
 export const TodoItem = ({ todo }) => {
-  console.log(todo);
-
+  // console.log(todo);
   // const [Todo, setTodo] = useState(todo);
+  const [checkTodo] = useMutation(CheckTodoQuery);
+  const [deleteTodo] = useMutation(DeleteTodoQuery);
   let textColor;
   if (todo.priority === 1) {
     textColor = "red 4px solid";
@@ -17,10 +23,16 @@ export const TodoItem = ({ todo }) => {
   }
   // console.log(textColor);
   const dispatch = useDispatch();
-  const onDone = e => {
+  const onCheck = e => {
     console.log("done todo");
 
     e.preventDefault();
+    checkTodo({
+      variables: {
+        id: todo.id,
+        checked: !todo.checked
+      }
+    });
     // setTodoClass(!todoClass);
     dispatch({
       type: "TODO_DONE",
@@ -29,6 +41,12 @@ export const TodoItem = ({ todo }) => {
   };
   const onDelete = e => {
     e.preventDefault();
+    deleteTodo({
+      variables: {
+        id: todo.id
+      },
+      refetchQueries: [{ query: TodosQuery }]
+    });
     console.log("delete todo");
     dispatch({
       type: "TODO_DELETE",
@@ -40,7 +58,7 @@ export const TodoItem = ({ todo }) => {
       <li
         className={todo.checked ? "todo-item-done" : null}
         style={{ borderLeft: textColor }}
-        onClick={onDone}
+        onClick={onCheck}
       >
         {todo.name}{" "}
       </li>
