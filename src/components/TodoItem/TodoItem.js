@@ -4,13 +4,12 @@ import { useDispatch } from "react-redux";
 import {
   CheckTodoQuery,
   DeleteTodoQuery,
-  TodosQuery
+  TodosQuery,
 } from "../../Queries/queries";
 import { useMutation } from "@apollo/react-hooks";
 
 export const TodoItem = ({ todo }) => {
-  // console.log(todo);
-  // const [Todo, setTodo] = useState(todo);
+  // checkTodo and deleteTodo mutations for each todo item
   const [checkTodo] = useMutation(CheckTodoQuery);
   const [deleteTodo] = useMutation(DeleteTodoQuery);
   let textColor;
@@ -21,36 +20,45 @@ export const TodoItem = ({ todo }) => {
   } else {
     textColor = "blue 4px solid";
   }
-  // console.log(textColor);
   const dispatch = useDispatch();
-  const onCheck = e => {
-    console.log("done todo");
 
+  // For toggling a todo check
+  const onCheck = (e) => {
+    console.log("done todo");
     e.preventDefault();
+
+    // GraphQL mutation request with variables to update
     checkTodo({
       variables: {
         id: todo.id,
-        checked: !todo.checked
-      }
+        checked: !todo.checked,
+      },
     });
-    // setTodoClass(!todoClass);
+
+    // Store update dispatch
     dispatch({
       type: "TODO_DONE",
-      payload: todo
+      payload: todo,
     });
   };
-  const onDelete = e => {
+
+  //Deleting a todo item
+  const onDelete = (e) => {
     e.preventDefault();
+
+    // GraphQL mutation request with variables to update
     deleteTodo({
       variables: {
-        id: todo.id
+        id: todo.id,
       },
-      refetchQueries: [{ query: TodosQuery }]
+      refetchQueries: [{ query: TodosQuery }],
     });
     console.log("delete todo");
+
+    // Store update dispatch
     dispatch({
       type: "TODO_DELETE",
-      payload: todo.name
+      payload: todo.name,
     });
   };
   return (

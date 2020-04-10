@@ -7,22 +7,26 @@ import todos_Reducer from "./Actions_Reducers/todos_Reducer";
 import { ApolloProvider } from "react-apollo";
 import ApolloClient from "apollo-boost";
 
+// Apollo Client to connect to the server side GrapghQL queries and mutations
 const client = new ApolloClient({ uri: "http://localhost:5000/graphql" });
-// console.log(client);
 
+// Initial State of the data tree for the application
 export const InitialState = {
   todos: [],
   error: null,
-  loading: undefined
+  loading: undefined,
 };
 
-console.log(InitialState);
-// const allReducers = combineReducers({ todos });
+// Defining store for our application which uses InitialState to begin with
 
+// For multiple reducers we use the below commented method
+// const allReducers = combineReducers({ todos_Reducer, ... });
 export const store = createStore(todos_Reducer);
 
 ReactDOM.render(
+  // ApolloProvider that lets the components interact with the client
   <ApolloProvider client={client}>
+    {/* Redux Provider that lets all ccomponents access the store which gets updated when useDispatch runs code inside Reducer's switch case */}
     <Provider store={store}>
       <App />
     </Provider>

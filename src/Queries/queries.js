@@ -1,5 +1,7 @@
 import { gql } from "apollo-boost";
 
+// Defining GraphQL queries on client side
+
 export const TodosQuery = gql`
   {
     todos {
