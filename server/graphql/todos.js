@@ -11,6 +11,20 @@ const graphql = require("graphql"),
   } = graphql;
 
 const Todo = require("../models/todo");
+const User = require("../models/user");
+
+//GraphQL schema for User
+const UserType = new GraphQLObjectType({
+  name: "Todo",
+  fields: () => ({
+    id: { type: GraphQLID },
+    name: { type: GraphQLString },
+    email: { type: GraphQLString },
+    phone: { type: GraphQLInt },
+    verified: { type: GraphQLBoolean },
+    todos: { type: TodoType },
+  }),
+});
 
 // GraphQL schema for Todo
 const TodoType = new GraphQLObjectType({
@@ -31,6 +45,15 @@ const RootQuery = new GraphQLObjectType({
       type: new GraphQLList(TodoType),
       resolve(parent, args) {
         return Todo.find({});
+      },
+    },
+    login: {
+      type: new GraphQLObjectType(UserType),
+      resolve(parent, args, req) {
+        User.find({ email: args.email }).then((user) => {
+          console.log(user);
+        });
+        return {};
       },
     },
   },
