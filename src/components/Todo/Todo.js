@@ -12,9 +12,10 @@ export const Todo = () => {
 
   // Using useQuery from apollo/react-hooks to get the data from mongodb through server side GraphQL
   const todosData = useQuery(TodosQuery);
-
+  console.log(todosData);
   // todos data object from mongodb
   var mongoData = todosData.data;
+  console.log(mongoData);
 
   if (todosData.loading) {
     console.log("data loading");

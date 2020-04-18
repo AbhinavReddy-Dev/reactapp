@@ -2,6 +2,37 @@ import { gql } from "apollo-boost";
 
 // Defining GraphQL queries on client side
 
+export const AddUserQuery = gql`
+  mutation(
+    $name: String!
+    $password: String!
+    $email: String!
+    $phone: Int!
+    $verified: Boolean!
+  ) {
+    addUser(
+      name: $name
+      password: $password
+      email: $email
+      phone: $phone
+      verified: $verified
+    ) {
+      id
+      token
+      tokenExpiration
+    }
+  }
+`;
+export const LoginQuery = gql`
+  query($email: String!, $password: String!) {
+    login(password: $password, email: $email) {
+      id
+      token
+      tokenExpiration
+    }
+  }
+`;
+
 export const TodosQuery = gql`
   {
     todos {
@@ -9,6 +40,7 @@ export const TodosQuery = gql`
       name
       priority
       checked
+      owner_id
     }
   }
 `;
@@ -20,6 +52,7 @@ export const AddTodoQuery = gql`
       name
       priority
       checked
+      owner_id
     }
   }
 `;
@@ -31,6 +64,7 @@ export const CheckTodoQuery = gql`
       name
       priority
       checked
+      owner_id
     }
   }
 `;
@@ -42,6 +76,7 @@ export const DeleteTodoQuery = gql`
       name
       priority
       checked
+      owner_id
     }
   }
 `;
