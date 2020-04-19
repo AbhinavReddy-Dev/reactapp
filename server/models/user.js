@@ -5,8 +5,9 @@ const schema = mongoose.Schema;
 const userSchema = new schema({
   name: String,
   email: String,
-  phone: Number,
+  phone: String,
   verified: Boolean,
+  created: { type: Date, default: Date.now },
 });
 
 module.exports = mongoose.model("User", userSchema);

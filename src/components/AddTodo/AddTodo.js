@@ -7,36 +7,36 @@ import { useMutation } from "@apollo/react-hooks";
 export const AddTodo = () => {
   // component level initial values of name and priority
   const [name, setName] = useState("");
-  const [priority, setpriority] = useState(undefined);
+  const [priority, setpriority] = useState(3);
   const dispatch = useDispatch();
 
   // useMutation to make mutation requests to the GraphQL on server side
   const [addTodo] = useMutation(AddTodoQuery);
 
   // Add Todo client side logic
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // addTodo Mutation with an obect containing variables of Todo add
-    addTodo({
+    const newTodo = await addTodo({
       variables: {
         name,
         priority: +priority,
       },
     });
-    console.log(name, priority);
-    const newTodo = {
-      name,
-      priority: +priority,
-      checked: false,
-      date: Date.now,
-    };
-    console.log("new todo", newTodo);
+    // console.log(name, priority);
+    // const newTodo = {
+    //   name,
+    //   priority: +priority,
+    //   checked: false,
+    //   date: Date.now,
+    // };
+    console.log("new todo", newTodo.data);
 
     // dispatching the type and payload to Reducer to update the state of the store with new data
     dispatch({
       type: "TODO_ADD",
-      payload: newTodo,
+      payload: newTodo.data.addTodo,
     });
 
     //resetting the values inside the form to " "

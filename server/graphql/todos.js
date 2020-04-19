@@ -22,7 +22,7 @@ const UserType = new GraphQLObjectType({
     name: { type: GraphQLString },
     password: { type: GraphQLString },
     email: { type: GraphQLString },
-    phone: { type: GraphQLInt },
+    phone: { type: GraphQLString },
     verified: { type: GraphQLBoolean },
     todos: {
       type: new GraphQLList(TodoType),
@@ -81,18 +81,15 @@ const RootQuery = new GraphQLObjectType({
       async resolve(parent, args, req) {
         const user = await User.findOne({ email: args.email });
         console.log(user);
-        console.log(
-          args.password,
-          bcrypt.compareSync(user.password, args.password)
-        );
+
         if (!user) {
           console.log("not user");
-          throw new Error("Invalid Credentials");
+          throw new Error("no user Invalid Credentials");
         }
-        const isEqual = bcrypt.compareSync(args.password, user.password);
+        let isEqual = await bcrypt.compare(args.password, user.password);
         if (!isEqual) {
           console.log("not equal");
-          throw new Error("Invalid Credentials");
+          throw new Error("not equal Invalid Credentials");
         }
         var token = jwt.sign(
           { userId: user._id, email: user.email },
@@ -126,17 +123,19 @@ const Mutation = new GraphQLObjectType({
         name: { type: GraphQLString },
         password: { type: GraphQLString },
         email: { type: GraphQLString },
-        phone: { type: GraphQLInt },
+        phone: { type: GraphQLString },
       },
       async resolve(parent, args) {
-        const user = await User.findOne({ email: args.email });
+        let user = await User.findOne({ email: args.email });
         if (user) {
           throw new Error("User Exists");
         }
-        let user = new User({
+        let hashpassword = bcrypt.hash(args.password, 10);
+        console.log(hashpassword);
+        user = new User({
           name: args.name,
           email: args.email,
-          password: bcrypt.hashSync(args.password, 10),
+          password: hashpassword,
           phone: args.phone,
           verified: false,
         });
@@ -160,7 +159,7 @@ const Mutation = new GraphQLObjectType({
       args: {
         name: { type: GraphQLString },
         priority: { type: GraphQLInt },
-        owner_id: { type: GraphQLID },
+        // owner_id: { type: GraphQLID },
       },
       resolve(parent, args) {
         let todo = new Todo({

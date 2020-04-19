@@ -7,7 +7,7 @@ export const AddUserQuery = gql`
     $name: String!
     $password: String!
     $email: String!
-    $phone: Int!
+    $phone: String!
     $verified: Boolean!
   ) {
     addUser(
@@ -24,8 +24,8 @@ export const AddUserQuery = gql`
   }
 `;
 export const LoginQuery = gql`
-  query($email: String!, $password: String!) {
-    login(password: $password, email: $email) {
+  query($email: String, $password: String) {
+    login(email: $email, password: $password) {
       id
       token
       tokenExpiration
@@ -46,7 +46,7 @@ export const TodosQuery = gql`
 `;
 
 export const AddTodoQuery = gql`
-  mutation($name: String!, $priority: Int!) {
+  mutation($name: String!, $priority: Int) {
     addTodo(name: $name, priority: $priority) {
       id
       name

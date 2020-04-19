@@ -92,27 +92,27 @@ const Mutation = new GraphQLObjectType({
         phone: { type: GraphQLInt },
       },
       async resolve(parent, args) {
-        const user = await User.findOne({ email: args.email });
-        if (user) {
+        const finduser = await User.findOne({ email: args.email });
+        if (finduser) {
           throw new Error("User Exists");
         }
-        let user = new User({
+        let newuser = new User({
           name: args.name,
           email: args.email,
           password: bcrypt.hashSync(args.password, 10),
           phone: args.phone,
           verified: false,
         });
-        const newuser = await user.save();
+        const newUser = await newuser.save();
         var token = jwt.sign(
-          { userId: user._id, email: user.email },
+          { userId: newUser._id, email: newUser.email },
           "supersecret123",
           {
             expiresIn: 60 * 60,
           }
         );
         return {
-          id: newuser._id,
+          id: newUser._id,
           token,
           sessionExpiration: 60 * 60,
         };

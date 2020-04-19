@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./TodoItem.css";
 import { useDispatch } from "react-redux";
 import {
@@ -23,12 +23,12 @@ export const TodoItem = ({ todo }) => {
   const dispatch = useDispatch();
 
   // For toggling a todo check
-  const onCheck = (e) => {
+  const onCheck = async (e) => {
     console.log("done todo");
     e.preventDefault();
 
     // GraphQL mutation request with variables to update
-    checkTodo({
+    const checkToggle = await checkTodo({
       variables: {
         id: todo.id,
         checked: !todo.checked,
@@ -36,9 +36,10 @@ export const TodoItem = ({ todo }) => {
     });
 
     // Store update dispatch
+    console.log("todoitem toggle check", checkToggle.data.checkTodo.checked);
     dispatch({
-      type: "TODO_DONE",
-      payload: todo,
+      type: "TODO_CHECKTOGGLE",
+      payload: checkToggle.data.checkTodo,
     });
   };
 

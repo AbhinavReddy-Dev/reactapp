@@ -14,12 +14,13 @@ export const Todo = () => {
   const todosData = useQuery(TodosQuery);
   console.log(todosData);
   // todos data object from mongodb
-  var mongoData = todosData.data;
-  console.log(mongoData);
+  // var mongoData = todosData.data;
+  // console.log(mongoData);
 
   if (todosData.loading) {
     console.log("data loading");
   } else {
+    var mongoData = todosData.data;
     console.log("data available", mongoData.todos);
     // Using dispatch to update todos from reducer with type and payload
     dispatch({
@@ -32,7 +33,11 @@ export const Todo = () => {
       <h1>Another Todo App</h1>
       <AddTodo />
       {/* Below ternary is mandatory to render the data recieved from GraphQL */}
-      {todosData.loading ? <p>Data Loading</p> : <TodoList />}
+      {todosData.loading ? (
+        <p>Data Loading</p>
+      ) : (
+        <TodoList todos={mongoData.todos} />
+      )}
     </div>
   );
 };

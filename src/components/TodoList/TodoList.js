@@ -1,33 +1,33 @@
 import React, { useState } from "react";
 import { TodoItem } from "../TodoItem/TodoItem";
 import "./TodoList.css";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { store } from "../../index";
 
-export const TodoList = () => {
-  // useSelector from react-redux to access particular data object in the store state for the initial render of component data
-  const initialTodos = useSelector((state) => state.todos);
+export const TodoList = ({ todos }) => {
+  // useSelector from react-redux to access particular data object in the store state for the initial render of component data when there is only one reducer
+  // const initialTodos = useSelector((state) => state.todos);
+  // const initialTodos = store.getState().todos.todos;
 
   // useState to update the todos within the component
-  const [todos, setTodos] = useState(initialTodos);
+  const [todoslist, setTodos] = useState(todos);
 
   // Separating checked todos and unchecked todos
   const [todosDone, settodosDone] = useState(
-    todos.filter((todo) => todo.checked === true)
+    todoslist.filter((todo) => todo.checked === true)
   );
   const [todosCurrent, settodosCurrent] = useState(
-    todos.filter((todo) => todo.checked !== true)
+    todoslist.filter((todo) => todo.checked !== true)
   );
 
   // Subscribing to the store to stay updated with the state after initial state render
   store.subscribe(() => {
-    const todos = store.getState().todos;
-    console.log("from todolist subscription ", todos);
-
+    const todoslist = store.getState().todos.todos;
+    console.log("from todolist subscription ", todoslist);
     // setTodos, settodosDone, settodosCurrent staying updated after every store state update
-    setTodos(todos);
-    settodosDone(todos.filter((todo) => todo.checked === true));
-    settodosCurrent(todos.filter((todo) => todo.checked !== true));
+    setTodos(todoslist);
+    settodosDone(todoslist.filter((todo) => todo.checked === true));
+    settodosCurrent(todoslist.filter((todo) => todo.checked !== true));
   });
   return (
     <div className="todo-list">
@@ -37,7 +37,7 @@ export const TodoList = () => {
         {todosDone.length > 0 ? (
           <ul>
             {todosDone.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} />
+              <TodoItem key={todo.id + "1"} todo={todo} />
             ))}
           </ul>
         ) : (
