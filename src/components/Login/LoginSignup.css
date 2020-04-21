@@ -33,13 +33,13 @@ select {
   border-radius: 4px;
 }
 .link-button {
-  /* width: 9.5vw; */
-  /* height: 3vh; */
+  width: 9.5vw;
+  height: 3vh;
   cursor: pointer;
   margin: 1vh auto;
   padding: 6px auto;
   color: white;
   font-size: large;
-  background-color: mediumseagreen;
+  background-color: purple;
   border-radius: 4px;
 }

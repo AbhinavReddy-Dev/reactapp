@@ -1,0 +1,31 @@
+.nav-bar {
+  margin: 0;
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  width: 100%;
+  padding: 3vh 4vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.nav-bar-title {
+  margin: 0;
+  color: white;
+  font-size: x-larger;
+  font-family: Arial, Helvetica, sans-serif, "Times New Roman", Times, serif;
+  font-weight: 100;
+  letter-spacing: 0.2em;
+}
+.nav-bar-button {
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  color: aliceblue;
+  font-weight: bold;
+  height: 3vh;
+  padding: 0.1vh 1vw;
+  font-size: small;
+  background-color: red;
+  border-radius: 4px;
+  border-color: red;
+}

@@ -18,7 +18,9 @@ export const InitialStateTodos = {
   loading: undefined,
 };
 export const InitialStateLogin = {
-  loginToken: null,
+  token: null,
+  userId: null,
+  sessionExpiration: null,
 };
 // Defining store for our application which uses InitialState to begin with
 
@@ -28,7 +30,6 @@ const allReducers = combineReducers({
   login: loginsignup_Reducer,
 });
 export const store = createStore(allReducers);
-console.log("store", store);
 
 ReactDOM.render(
   // ApolloProvider that lets the components interact with the client

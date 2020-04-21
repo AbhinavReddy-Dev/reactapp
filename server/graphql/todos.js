@@ -40,7 +40,7 @@ const AuthType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     token: { type: GraphQLString },
-    tokenExpiration: { type: GraphQLInt },
+    sessionExpiration: { type: GraphQLInt },
   }),
 });
 
@@ -69,7 +69,7 @@ const RootQuery = new GraphQLObjectType({
     todos: {
       type: new GraphQLList(TodoType),
       resolve(parent, args, req) {
-        return Todo.find({ owner_id: "5e9b32151c9d44000035b5e8" });
+        return Todo.find({ owner_id: req.userId });
       },
     },
     login: {
@@ -80,17 +80,20 @@ const RootQuery = new GraphQLObjectType({
       },
       async resolve(parent, args, req) {
         const user = await User.findOne({ email: args.email });
-        console.log(user);
-
+        // console.log(user);
+        // console.log(args.password, user.password);
         if (!user) {
           console.log("not user");
           throw new Error("no user Invalid Credentials");
         }
-        let isEqual = await bcrypt.compare(args.password, user.password);
-        if (!isEqual) {
-          console.log("not equal");
-          throw new Error("not equal Invalid Credentials");
-        }
+        bcrypt.compare(args.password, user.password, (err, isEqual) => {
+          // console.log(isEqual);
+          if (!isEqual) {
+            throw new Error("not equal Invalid Credentials");
+          }
+        });
+        // let isEqual = await bcrypt.compare(args.password, user.password);
+
         var token = jwt.sign(
           { userId: user._id, email: user.email },
           "supersecret123",
@@ -103,11 +106,12 @@ const RootQuery = new GraphQLObjectType({
           token,
           sessionExpiration: 60 * 60,
         });
-        return {
+        const tokenData = {
           id: user._id,
           token,
           sessionExpiration: 60 * 60,
         };
+        return tokenData;
       },
     },
   },
@@ -130,28 +134,33 @@ const Mutation = new GraphQLObjectType({
         if (user) {
           throw new Error("User Exists");
         }
-        let hashpassword = bcrypt.hash(args.password, 10);
-        console.log(hashpassword);
+        const hash = await bcrypt.hash(args.password, 10);
+        console.log(hash);
         user = new User({
           name: args.name,
           email: args.email,
-          password: hashpassword,
+          password: hash,
           phone: args.phone,
           verified: false,
         });
         const newuser = await user.save();
+        // args.password = await bcrypt.hash(args.password, 10);
+        // console.log(hashpasword);
+        // const newuser = await User.findOne({ email: args.email });
+        console.log(newuser);
         var token = jwt.sign(
-          { userId: user._id, email: user.email },
+          { userId: newuser._id, email: newuser.email },
           "supersecret123",
           {
             expiresIn: 60 * 60,
           }
         );
-        return {
+        const authToken = {
           id: newuser._id,
           token,
           sessionExpiration: 60 * 60,
         };
+        return authToken;
       },
     },
     addTodo: {
@@ -161,12 +170,12 @@ const Mutation = new GraphQLObjectType({
         priority: { type: GraphQLInt },
         // owner_id: { type: GraphQLID },
       },
-      resolve(parent, args) {
+      resolve(parent, args, req) {
         let todo = new Todo({
           name: args.name,
           priority: args.priority,
           checked: false,
-          owner_id: "5e9b32151c9d44000035b5e8",
+          owner_id: req.userId,
         });
         return todo.save();
       },

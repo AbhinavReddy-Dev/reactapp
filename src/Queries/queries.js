@@ -3,32 +3,25 @@ import { gql } from "apollo-boost";
 // Defining GraphQL queries on client side
 
 export const AddUserQuery = gql`
-  mutation(
+  mutation addUser(
     $name: String!
     $password: String!
     $email: String!
     $phone: String!
-    $verified: Boolean!
   ) {
-    addUser(
-      name: $name
-      password: $password
-      email: $email
-      phone: $phone
-      verified: $verified
-    ) {
+    addUser(name: $name, password: $password, email: $email, phone: $phone) {
       id
       token
-      tokenExpiration
+      sessionExpiration
     }
   }
 `;
 export const LoginQuery = gql`
-  query($email: String, $password: String) {
+  query login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       id
       token
-      tokenExpiration
+      sessionExpiration
     }
   }
 `;
