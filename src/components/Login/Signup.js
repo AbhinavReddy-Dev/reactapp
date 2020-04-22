@@ -13,11 +13,12 @@ export const Signup = () => {
   const [phone, setPhone] = useState("");
 
   // Using useQuery from apollo/react-hooks to get the data from mongodb through server side GraphQL
-  const [signup] = useMutation(AddUserQuery);
+  const [addUser] = useMutation(AddUserQuery);
+  console.log(addUser);
 
   const handleSignup = async (e) => {
     e.preventDefault();
-    signup({
+    const newUser = await addUser({
       variables: {
         name,
         email,
@@ -26,11 +27,11 @@ export const Signup = () => {
       },
     });
 
-    console.log("signup", signup);
+    console.log("signup", newUser);
 
     dispatch({
       type: "LOGIN_SIGNUP",
-      payload: signup.data,
+      payload: newUser.data.addUser,
     });
 
     setEmail("");
@@ -41,7 +42,7 @@ export const Signup = () => {
 
   return (
     <div>
-      <form className="todo-add" onSubmit={() => handleSignup}>
+      <form className="todo-add" onSubmit={handleSignup}>
         <input
           type="text"
           className="input"

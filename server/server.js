@@ -7,15 +7,25 @@ const app = express();
 const isAuth = require("../server/middleware/is-auth");
 
 // Mongoose collection connection, can be made secure using dotenv and store in an environment variable
-mongoose.connect(
-  "mongodb+srv://singularityDev:akshitha123@singularitydev-lekkm.mongodb.net/todoapp?retryWrites=true&w=majority",
-  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
-);
+mongoose
+  .connect(
+    "mongodb+srv://singularityDev:akshitha123@singularitydev-lekkm.mongodb.net/todoapp?retryWrites=true&w=majority",
+    { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
+  )
+  .catch((error) => {
+    console.log(error.name, error.message);
+  });
+
 mongoose.connection.once("open", () => {
   console.log(" 🛰 connected to mongoose ");
 });
 
 // cors to let apollo client GrapghQL requests access server side GraphQL schemas and resolvers
+// var corsOptions = {
+//   origin: "http://localhost:3000",
+//   credentials: true, // <-- REQUIRED backend setting for cookies
+// };
+// app.use(cors(corsOptions));
 app.use(cors());
 
 app.use(isAuth);
@@ -25,6 +35,7 @@ app.use(
   graphqlHTTP({
     schema: todos_schema,
     graphiql: true,
+    context: ({ req, res }) => ({ req, res }),
   })
 );
 

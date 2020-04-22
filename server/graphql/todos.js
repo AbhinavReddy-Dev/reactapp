@@ -69,6 +69,7 @@ const RootQuery = new GraphQLObjectType({
     todos: {
       type: new GraphQLList(TodoType),
       resolve(parent, args, req) {
+        // console.log(req);
         return Todo.find({ owner_id: req.userId });
       },
     },
@@ -78,7 +79,7 @@ const RootQuery = new GraphQLObjectType({
         email: { type: GraphQLString },
         password: { type: GraphQLString },
       },
-      async resolve(parent, args, req) {
+      async resolve(parent, args, req, res) {
         const user = await User.findOne({ email: args.email });
         // console.log(user);
         // console.log(args.password, user.password);
@@ -98,18 +99,18 @@ const RootQuery = new GraphQLObjectType({
           { userId: user._id, email: user.email },
           "supersecret123",
           {
-            expiresIn: 60 * 60,
+            expiresIn: "1d",
           }
         );
         console.log({
           id: user._id,
           token,
-          sessionExpiration: 60 * 60,
+          sessionExpiration: 86400000,
         });
         const tokenData = {
           id: user._id,
           token,
-          sessionExpiration: 60 * 60,
+          sessionExpiration: 86400000,
         };
         return tokenData;
       },
@@ -130,6 +131,7 @@ const Mutation = new GraphQLObjectType({
         phone: { type: GraphQLString },
       },
       async resolve(parent, args) {
+        console.log("hey");
         let user = await User.findOne({ email: args.email });
         if (user) {
           throw new Error("User Exists");
@@ -152,13 +154,13 @@ const Mutation = new GraphQLObjectType({
           { userId: newuser._id, email: newuser.email },
           "supersecret123",
           {
-            expiresIn: 60 * 60,
+            expiresIn: 86400000,
           }
         );
         const authToken = {
           id: newuser._id,
           token,
-          sessionExpiration: 60 * 60,
+          sessionExpiration: 86400000,
         };
         return authToken;
       },
