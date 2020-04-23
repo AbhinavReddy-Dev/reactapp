@@ -6,6 +6,7 @@ export default (state = InitialStateLogin, action) => {
   switch (action.type) {
     case "LOGIN_SIGNUP":
       console.log(action);
+      localStorage.setItem("token", action.payload.token);
       return {
         ...state,
         token: action.payload.token,

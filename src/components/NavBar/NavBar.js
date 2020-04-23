@@ -2,12 +2,15 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import "./NavBar.css";
 import { useSelector } from "react-redux";
+import { client } from "../../index";
 
 export const NavBar = () => {
   const loginToken = useSelector((state) => state.login);
   const dispatch = useDispatch();
   const logoutHandle = (e) => {
     e.preventDefault();
+    client.resetStore();
+    localStorage.setItem("token", null);
     dispatch({
       type: "LOGOUT",
       payload: {},

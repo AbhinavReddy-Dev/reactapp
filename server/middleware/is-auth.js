@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 module.exports = (req, res, next) => {
-  const authHeader = req.get("Authorization");
+  const authHeader = req.get("authorization");
   console.log(authHeader);
   if (!authHeader) {
     console.log("from not authHeader");
@@ -27,7 +27,10 @@ module.exports = (req, res, next) => {
     req.isAuth = false;
     return next();
   }
+  console.log("from is-auth");
   req.isAuth = true;
   req.userId = decodedToken.userId;
+  console.log(req.isAuth, req.userId);
+
   next();
 };

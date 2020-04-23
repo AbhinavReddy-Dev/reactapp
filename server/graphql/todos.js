@@ -68,9 +68,12 @@ const RootQuery = new GraphQLObjectType({
     },
     todos: {
       type: new GraphQLList(TodoType),
-      resolve(parent, args, req) {
-        // console.log(req);
-        return Todo.find({ owner_id: req.userId });
+      resolve(parent, args, req, res) {
+        if (req.isAuth) {
+          console.log("todos data", req.userId);
+          return Todo.find({ owner_id: req.userId });
+        }
+        throw new Error("Not Authorized");
       },
     },
     login: {

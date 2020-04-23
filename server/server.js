@@ -21,12 +21,12 @@ mongoose.connection.once("open", () => {
 });
 
 // cors to let apollo client GrapghQL requests access server side GraphQL schemas and resolvers
-// var corsOptions = {
-//   origin: "http://localhost:3000",
-//   credentials: true, // <-- REQUIRED backend setting for cookies
-// };
-// app.use(cors(corsOptions));
-app.use(cors());
+var corsOptions = {
+  origin: "http://localhost:3000",
+  credentials: true, // <-- REQUIRED backend setting for cookies
+};
+app.use(cors(corsOptions));
+// app.use(cors());
 
 app.use(isAuth);
 // server side start point for query requests
@@ -35,7 +35,6 @@ app.use(
   graphqlHTTP({
     schema: todos_schema,
     graphiql: true,
-    context: ({ req, res }) => ({ req, res }),
   })
 );
 

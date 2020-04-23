@@ -23,7 +23,7 @@ export const Login = () => {
       console.log("login token loading");
     }
     if (!loading && data) {
-      console.log("login", data.login);
+      console.log("login happened", data.login);
       dispatch({
         type: "LOGIN_SIGNUP",
         payload: data.login,
@@ -34,12 +34,17 @@ export const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     console.log(email, password);
-    login({
-      variables: {
-        email: email,
-        password: password,
-      },
-    });
+    try {
+      login({
+        variables: {
+          email: email,
+          password: password,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+
     setEmail("");
     setPassword("");
   };
