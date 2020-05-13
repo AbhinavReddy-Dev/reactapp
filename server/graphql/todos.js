@@ -102,19 +102,28 @@ const RootQuery = new GraphQLObjectType({
           { userId: user._id, email: user.email },
           "supersecret123",
           {
-            expiresIn: "1d",
+            expiresIn: 300,
           }
         );
+        var refreshToken = jwt.sign({ userId: user._id }, "supersecret123", {
+          expiresIn: "7d",
+        });
         console.log({
           id: user._id,
           token,
-          sessionExpiration: 86400000,
+          sessionExpiration: 300,
         });
         const tokenData = {
           id: user._id,
           token,
-          sessionExpiration: 86400000,
+          sessionExpiration: 60 * 15,
         };
+        // setCookie("login", tokenData, 7);
+        req.res.cookie("login", refreshToken, {
+          expires: new Date(Date.now() + 86400000),
+          httpOnly: true,
+        });
+
         return tokenData;
       },
     },
@@ -157,13 +166,13 @@ const Mutation = new GraphQLObjectType({
           { userId: newuser._id, email: newuser.email },
           "supersecret123",
           {
-            expiresIn: 86400000,
+            expiresIn: 300,
           }
         );
         const authToken = {
           id: newuser._id,
           token,
-          sessionExpiration: 86400000,
+          sessionExpiration: 60 * 15,
         };
         return authToken;
       },

@@ -18,7 +18,10 @@ import {
 
 // const loginToken = useSelector((state) => state.login);
 // console.log("Login Token from app", loginToken);
-
+var loginToken;
+export function loginSetToken(token) {
+  loginToken = token;
+}
 // Initial State of the data tree for the application
 export const InitialStateTodos = {
   todos: [],
@@ -41,11 +44,13 @@ export const store = createStore(allReducers);
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   console.log("from middleware 1");
-  const token = localStorage.getItem("token");
+  // const token = localStorage.getItem("token");
+  const token = loginToken;
   operation.setContext({
     headers: {
       authorization: token ? "Bearer " + token : " Bearer",
     },
+    credentials: "include",
   });
   console.log("from middleware 2");
 

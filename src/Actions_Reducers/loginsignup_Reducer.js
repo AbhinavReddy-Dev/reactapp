@@ -5,8 +5,12 @@ export default (state = InitialStateLogin, action) => {
   // Switch cases for each type of dispatch with payload in action object to update the state of the store
   switch (action.type) {
     case "LOGIN_SIGNUP":
-      console.log(action);
-      localStorage.setItem("token", action.payload.token);
+      // console.log(action);
+      // localStorage.setItem("token", null);
+      // console.log(localStorage.getItem("token"));
+      // localStorage.setItem("token", action.payload.token);
+      // console.log(localStorage.getItem("token"));
+
       return {
         ...state,
         token: action.payload.token,

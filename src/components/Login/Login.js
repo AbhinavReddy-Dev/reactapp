@@ -3,6 +3,7 @@ import "./LoginSignup.css";
 import { LoginQuery } from "../../Queries/queries";
 import { useDispatch } from "react-redux";
 import { useLazyQuery } from "@apollo/react-hooks";
+import { loginSetToken } from "../../index";
 
 export const Login = () => {
   // dispatch to make calls to Reducers to update the state of the store
@@ -24,6 +25,8 @@ export const Login = () => {
     }
     if (!loading && data) {
       console.log("login happened", data.login);
+
+      loginSetToken(data.login.token);
       dispatch({
         type: "LOGIN_SIGNUP",
         payload: data.login,

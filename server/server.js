@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 const graphqlHTTP = require("express-graphql");
 const todos_schema = require("./graphql/todos");
 const cors = require("cors");
@@ -27,7 +28,7 @@ var corsOptions = {
 };
 app.use(cors(corsOptions));
 // app.use(cors());
-
+app.use(cookieParser());
 app.use(isAuth);
 // server side start point for query requests
 app.use(
@@ -37,9 +38,11 @@ app.use(
     graphiql: true,
   })
 );
-
 // Express listening on a port to run server side
 const port = 5000;
 app.listen(port, () => {
   console.log(" 🚀 server lauched on launch port ", port);
+});
+app.on("listening", function () {
+  console.log("ok, server is running fine 🟢");
 });
