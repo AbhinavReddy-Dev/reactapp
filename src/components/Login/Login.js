@@ -25,7 +25,6 @@ export const Login = () => {
     }
     if (!loading && data) {
       console.log("login happened", data.login);
-
       loginSetToken(data.login.token);
       dispatch({
         type: "LOGIN_SIGNUP",

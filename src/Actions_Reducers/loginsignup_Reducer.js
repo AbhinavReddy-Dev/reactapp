@@ -6,7 +6,7 @@ export default (state = InitialStateLogin, action) => {
   switch (action.type) {
     case "LOGIN_SIGNUP":
       // console.log(action);
-      // localStorage.setItem("token", null);
+      localStorage.setItem("login", true);
       // console.log(localStorage.getItem("token"));
       // localStorage.setItem("token", action.payload.token);
       // console.log(localStorage.getItem("token"));
@@ -18,6 +18,8 @@ export default (state = InitialStateLogin, action) => {
         sessionExpiration: action.payload.sessionExpiration,
       };
     case "LOGOUT":
+      localStorage.setItem("login", false);
+
       return {
         ...state,
         token: null,

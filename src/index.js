@@ -12,15 +12,19 @@ import {
   ApolloClient,
   ApolloLink,
   HttpLink,
-  concat,
   InMemoryCache,
 } from "apollo-boost";
 
 // const loginToken = useSelector((state) => state.login);
 // console.log("Login Token from app", loginToken);
-var loginToken;
+export var loginToken;
 export function loginSetToken(token) {
   loginToken = token;
+  console.log("loginToken", loginToken);
+}
+export function logoutSetToken() {
+  loginToken = null;
+  console.log("logout token", loginToken);
 }
 // Initial State of the data tree for the application
 export const InitialStateTodos = {
@@ -43,12 +47,12 @@ const allReducers = combineReducers({
 export const store = createStore(allReducers);
 
 const authMiddleware = new ApolloLink((operation, forward) => {
-  console.log("from middleware 1");
-  // const token = localStorage.getItem("token");
-  const token = loginToken;
+  console.log("from middleware 1", loginToken);
+  // const token = loginToken;
+
   operation.setContext({
     headers: {
-      authorization: token ? "Bearer " + token : " Bearer",
+      authorization: loginToken ? "Bearer " + loginToken : "Bearer",
     },
     credentials: "include",
   });
@@ -57,10 +61,34 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
+//
+const afterwareLink = new ApolloLink((operation, forward) => {
+  console.log("afterwarelink start");
+  return forward(operation).map((response) => {
+    console.log("response", response);
+    const context = operation.getContext();
+    console.log("context", context);
+
+    const {
+      response: { headers },
+    } = context;
+
+    if (headers) {
+      const newToken = headers.get("x-token");
+      if (newToken) {
+        loginSetToken(newToken);
+        console.log("afterwarelink", newToken);
+      }
+    }
+    return response;
+  });
+});
+//
+
 // Apollo Client to connect to the server side GrapghQL queries and mutations
 const httpLink = new HttpLink({ uri: "http://localhost:5000/graphql" });
 export const client = new ApolloClient({
-  link: concat(authMiddleware, httpLink),
+  link: ApolloLink.from([authMiddleware, afterwareLink, httpLink]),
   cache: new InMemoryCache(),
 });
 
@@ -69,7 +97,7 @@ ReactDOM.render(
   <Provider store={store}>
     <ApolloProvider client={client}>
       {/* Redux Provider that lets all ccomponents access the store which gets updated when useDispatch runs code inside Reducer's switch case */}
-      <App />
+      <App loginToken={loginToken} />
     </ApolloProvider>
   </Provider>,
   document.getElementById("root")

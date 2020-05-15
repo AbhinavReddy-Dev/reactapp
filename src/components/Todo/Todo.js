@@ -4,25 +4,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { AddTodo } from "../AddTodo/AddTodo";
 import { TodoList } from "../TodoList/TodoList";
 import { TodosQuery } from "../../Queries/queries";
-import { useQuery } from "@apollo/react-hooks";
+import { useQuery, useLazyQuery } from "@apollo/react-hooks";
 
 export const Todo = () => {
   const loginToken = useSelector((state) => state.login);
   console.log("Login Token from Todo", loginToken);
   const dispatch = useDispatch();
-  const todosData = useQuery(TodosQuery);
+  const todosData = useLazyQuery(TodosQuery);
+  var isLoggedin = localStorage.getItem("login");
+
   // console.log(todosData);
   useEffect(() => {
-    if (!todosData.loading) {
+    if (isLoggedin) {
       // console.log("data not loading");
+      todosData();
       var mongoData = todosData.data;
-      console.log("data now available", mongoData.todos);
+      console.log("todos data now available", mongoData.todos);
       dispatch({
         type: "TODO_LIST",
         payload: mongoData.todos,
       });
     }
-  }, [todosData, dispatch]);
+  }, [todosData, dispatch, isLoggedin]);
 
   return (
     <div className="todo">

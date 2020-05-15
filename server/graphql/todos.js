@@ -14,6 +14,7 @@ const Todo = require("../models/todo");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { createTokens, refreshTokens } = require("../middleware/auth-func");
 
 const UserType = new GraphQLObjectType({
   name: "User",
@@ -69,6 +70,7 @@ const RootQuery = new GraphQLObjectType({
     todos: {
       type: new GraphQLList(TodoType),
       resolve(parent, args, req, res) {
+        console.log("todos list", req.isAuth, req.userId);
         if (req.isAuth) {
           console.log("todos data", req.userId);
           return Todo.find({ owner_id: req.userId });
@@ -83,7 +85,9 @@ const RootQuery = new GraphQLObjectType({
         password: { type: GraphQLString },
       },
       async resolve(parent, args, req, res) {
-        const user = await User.findOne({ email: args.email });
+        var user;
+        console.log("login args", args);
+        user = await User.findOne({ email: args.email });
         // console.log(user);
         // console.log(args.password, user.password);
         if (!user) {
@@ -96,35 +100,81 @@ const RootQuery = new GraphQLObjectType({
             throw new Error("not equal Invalid Credentials");
           }
         });
-        // let isEqual = await bcrypt.compare(args.password, user.password);
-
-        var token = jwt.sign(
-          { userId: user._id, email: user.email },
-          "supersecret123",
-          {
-            expiresIn: 300,
-          }
-        );
-        var refreshToken = jwt.sign({ userId: user._id }, "supersecret123", {
-          expiresIn: "7d",
-        });
+        const [token, refreshToken] = await createTokens(user);
+        console.log("from login");
         console.log({
           id: user._id,
           token,
-          sessionExpiration: 300,
+          refreshToken,
         });
+
         const tokenData = {
           id: user._id,
           token,
-          sessionExpiration: 60 * 15,
+          sessionExpiration: 300,
         };
-        // setCookie("login", tokenData, 7);
+
         req.res.cookie("login", refreshToken, {
-          expires: new Date(Date.now() + 86400000),
+          expires: new Date(Date.now() + 86400000 * 7),
           httpOnly: true,
+          secure: false,
+          sameSite: true,
+          overwrite: true,
         });
 
         return tokenData;
+      },
+    },
+    userCheck: {
+      type: AuthType,
+      async resolve(parent, args, req, res) {
+        var user;
+        if (req.isAuth) {
+          console.log("userId", req.userId);
+          user = await User.findById(req.userId);
+        }
+        // console.log(user);
+        // console.log(args.password, user.password);
+        if (!user) {
+          console.log("not user");
+          throw new Error("no user Invalid Credentials");
+        }
+        // bcrypt.compare(args.password, user.password, (err, isEqual) => {
+        //   // console.log(isEqual);
+        //   if (!isEqual) {
+        //     throw new Error("not equal Invalid Credentials");
+        //   }
+        // });
+        const [token, refreshToken] = await createTokens(user);
+        console.log("from userCheck");
+        console.log({
+          id: user._id,
+          token,
+          refreshToken,
+        });
+
+        const tokenData = {
+          id: user._id,
+          token,
+          sessionExpiration: 300,
+        };
+
+        return tokenData;
+      },
+    },
+    //
+    logout: {
+      type: GraphQLString,
+      async resolve(parent, args, req, res) {
+        console.log("from user logout");
+        req.res.clearCookie("login");
+        // , "undefined", {
+        //   httpOnly: true,
+        //   secure: true,
+        //   sameSite: false,
+        //   overwrite: true,
+        // });
+        return "Logout";
       },
     },
   },
@@ -162,19 +212,30 @@ const Mutation = new GraphQLObjectType({
         // console.log(hashpasword);
         // const newuser = await User.findOne({ email: args.email });
         console.log(newuser);
-        var token = jwt.sign(
-          { userId: newuser._id, email: newuser.email },
-          "supersecret123",
-          {
-            expiresIn: 300,
-          }
-        );
-        const authToken = {
-          id: newuser._id,
+        const [token, refreshToken] = await createTokens(newuser);
+        console.log("from signup");
+        console.log({
+          id: user._id,
           token,
-          sessionExpiration: 60 * 15,
+          refreshToken,
+          sessionExpiration: 300,
+        });
+
+        const tokenData = {
+          id: user._id,
+          token,
+          sessionExpiration: 300,
         };
-        return authToken;
+
+        req.res.cookie("login", refreshToken, {
+          expires: new Date(Date.now() + 86400000 * 7),
+          httpOnly: true,
+          secure: true,
+          sameSite: false,
+          overwrite: true,
+        });
+
+        return tokenData;
       },
     },
     addTodo: {

@@ -26,6 +26,22 @@ export const LoginQuery = gql`
   }
 `;
 
+export const UserCheckQuery = gql`
+  query userCheck {
+    userCheck {
+      id
+      token
+      sessionExpiration
+    }
+  }
+`;
+
+export const LogoutQuery = gql`
+  query logout {
+    logout
+  }
+`;
+
 export const TodosQuery = gql`
   {
     todos {
