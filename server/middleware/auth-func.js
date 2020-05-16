@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-// import _ from 'lodash';
-// import bcrypt from "bcrypt";
 const User = require("../models/user");
 
 //

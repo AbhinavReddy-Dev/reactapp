@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./AddTodo.css";
 import { useDispatch } from "react-redux";
-import { AddTodoQuery } from "../../Queries/queries";
+import { AddTodoQuery, TodosQuery } from "../../Queries/queries";
 import { useMutation } from "@apollo/react-hooks";
 
 export const AddTodo = () => {
@@ -17,29 +17,21 @@ export const AddTodo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // addTodo Mutation with an obect containing variables of Todo add
     const newTodo = await addTodo({
       variables: {
         name,
         priority: +priority,
       },
+      refetchQueries: [{ query: TodosQuery }],
     });
-    // console.log(name, priority);
-    // const newTodo = {
-    //   name,
-    //   priority: +priority,
-    //   checked: false,
-    //   date: Date.now,
-    // };
+
     console.log("new todo", newTodo.data);
 
-    // dispatching the type and payload to Reducer to update the state of the store with new data
     dispatch({
       type: "TODO_ADD",
       payload: newTodo.data.addTodo,
     });
 
-    //resetting the values inside the form to " "
     setName("");
     setpriority("");
   };

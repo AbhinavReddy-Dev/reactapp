@@ -14,7 +14,7 @@ const Todo = require("../models/todo");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const { createTokens, refreshTokens } = require("../middleware/auth-func");
+const { createTokens } = require("../middleware/auth-func");
 
 const UserType = new GraphQLObjectType({
   name: "User",
@@ -92,25 +92,17 @@ const RootQuery = new GraphQLObjectType({
         var user;
         console.log("login args", args);
         user = await User.findOne({ email: args.email });
-        // console.log(user);
-        // console.log(args.password, user.password);
         if (!user) {
           console.log("not user");
           throw new Error("no user Invalid Credentials");
         }
         bcrypt.compare(args.password, user.password, (err, isEqual) => {
-          // console.log(isEqual);
           if (!isEqual) {
             throw new Error("not equal Invalid Credentials");
           }
         });
         const [token, refreshToken] = await createTokens(user);
         console.log("from login");
-        // console.log({
-        //   id: user._id,
-        //   token,
-        //   refreshToken,
-        // });
 
         const tokenData = {
           id: user._id,
@@ -152,18 +144,11 @@ const RootQuery = new GraphQLObjectType({
 
           return tokenData;
         }
-        // console.log(user);
-        // console.log(args.password, user.password);
+
         if (!user) {
           console.log("not user in user check");
           throw new Error("no user Invalid Credentials");
         }
-        // bcrypt.compare(args.password, user.password, (err, isEqual) => {
-        //   // console.log(isEqual);
-        //   if (!isEqual) {
-        //     throw new Error("not equal Invalid Credentials");
-        //   }
-        // });
       },
     },
     //
@@ -172,12 +157,6 @@ const RootQuery = new GraphQLObjectType({
       async resolve(parent, args, req, res) {
         console.log("from user logout");
         req.res.clearCookie("login");
-        // , "undefined", {
-        //   httpOnly: true,
-        //   secure: true,
-        //   sameSite: false,
-        //   overwrite: true,
-        // });
         return "Logout";
       },
     },
@@ -212,10 +191,7 @@ const Mutation = new GraphQLObjectType({
           verified: false,
         });
         const newuser = await user.save();
-        // args.password = await bcrypt.hash(args.password, 10);
-        // console.log(hashpasword);
-        // const newuser = await User.findOne({ email: args.email });
-        console.log(newuser);
+
         const [token, refreshToken] = await createTokens(newuser);
         console.log("from signup");
         console.log({
@@ -247,7 +223,6 @@ const Mutation = new GraphQLObjectType({
       args: {
         name: { type: GraphQLString },
         priority: { type: GraphQLInt },
-        // owner_id: { type: GraphQLID },
       },
       resolve(parent, args, req) {
         let todo = new Todo({

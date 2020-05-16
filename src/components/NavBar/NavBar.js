@@ -3,26 +3,17 @@ import { useDispatch } from "react-redux";
 import "./NavBar.css";
 import { useSelector } from "react-redux";
 import { client } from "../../index";
-import { logoutSetToken, store } from "../../index";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { LogoutQuery } from "../../Queries/queries";
-import { Router, Redirect } from "react-router-dom";
-// import { loginToken } from "../../index";
 
 export const NavBar = () => {
-  // var loginToken = {};
-  // console.log(localStorage.getItem("login"));
-  const loginToken = useSelector((store) => store.login.token);
+  const [loginToken, setLoginToken] = useState(
+    useSelector((store) => store.login.token)
+  );
   console.log(loginToken);
-  useSelector((store) => console.log("from navbar store", store));
+  // useSelector((store) => console.log("from navbar store", store));
   const dispatch = useDispatch();
   let [logout, { called, loading, data }] = useLazyQuery(LogoutQuery);
-  // const [loginState, setLoginState] = useState(localStorage.getItem("login"));
-  // store.subscribe(() => {
-  //   const loginState = store.getState().login.isLoggedin;
-  //   console.log("from todolist subscription ", loginState);
-  //   setLoginState(loginState);
-  // });
 
   useEffect(() => {
     if (loading && called) {
@@ -30,7 +21,7 @@ export const NavBar = () => {
     }
     if (!loading && data) {
       console.log("logout, yo!");
-      logoutSetToken();
+      setLoginToken(null);
       dispatch({
         type: "LOGOUT",
         payload: {},
@@ -41,6 +32,7 @@ export const NavBar = () => {
   const logoutHandle = (e) => {
     e.preventDefault();
     client.resetStore();
+
     try {
       logout();
       // setLoginState(false);
@@ -57,7 +49,7 @@ export const NavBar = () => {
           🤦🏻‍♂️
         </span>
       </h1>
-      {loginToken && (
+      {useSelector((store) => store.login.token) && (
         <button className="nav-bar-button" onClick={logoutHandle}>
           Logout
         </button>

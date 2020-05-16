@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { TodoItem } from "../TodoItem/TodoItem";
 import "./TodoList.css";
-import { useSelector } from "react-redux";
 import { store } from "../../index";
 
 export const TodoList = () => {
   // useSelector from react-redux to access particular data object in the store state for the initial render of component data when there is only one reducer
-  // const initialTodos = useSelector((store) => store.todos.todos);
   const initialTodos = store.getState().todos.todos;
-  console.log(initialTodos);
   // useState to update the todos within the component
   const [todoslist, setTodos] = useState(initialTodos);
 
@@ -23,7 +20,6 @@ export const TodoList = () => {
   // Subscribing to the store to stay updated with the state after initial state render
   store.subscribe(() => {
     const todoslist = store.getState().todos.todos;
-    // console.log("from todolist subscription ", todoslist);
     // setTodos, settodosDone, settodosCurrent staying updated after every store state update
     setTodos(todoslist);
     settodosDone(todoslist.filter((todo) => todo.checked === true));

@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const { createTokens, refreshTokens } = require("./auth-func");
+const { refreshTokens } = require("./auth-func");
 
 module.exports = async (req, res, next) => {
   const authHeader = req.get("Authorization");

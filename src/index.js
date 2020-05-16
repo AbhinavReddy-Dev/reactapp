@@ -6,7 +6,6 @@ import { Provider } from "react-redux";
 import todos_Reducer from "./Actions_Reducers/todos_Reducer";
 import loginsignup_Reducer from "./Actions_Reducers/loginsignup_Reducer";
 import { ApolloProvider } from "react-apollo";
-// import ApolloClient from "apollo-boost";
 
 import {
   ApolloClient,
@@ -15,19 +14,8 @@ import {
   InMemoryCache,
 } from "apollo-boost";
 
-// const loginToken = useSelector((state) => state.login);
-// console.log("Login Token from app", loginToken);
 export var loginToken;
-export function loginSetToken(token) {
-  // loginToken = token;
-  // localStorage.setItem("token", token);
 
-  console.log("login Token", token);
-}
-export function logoutSetToken() {
-  // loginToken = null;
-  // console.log("logout token", loginToken);
-}
 // Initial State of the data tree for the application
 export const InitialStateTodos = {
   todos: [],
@@ -37,7 +25,7 @@ export const InitialStateTodos = {
 export const InitialStateLogin = {
   isLoggedin: Boolean,
   token:
-    localStorage.getItem("token") != ("null" || null)
+    localStorage.getItem("token") !== ("null" || null)
       ? localStorage.getItem("token")
       : null,
   userId: null,
@@ -54,7 +42,6 @@ export const store = createStore(allReducers);
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   console.log("from middleware 1", loginToken);
-  // const token = loginToken;
   loginToken = localStorage.getItem("token");
   console.log("from middleware 1", loginToken);
   operation.setContext({
@@ -82,8 +69,7 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 
     if (headers) {
       const newToken = headers.get("x-token");
-      if (newToken) {
-        // loginSetToken(newToken);
+      if (newToken && localStorage.getItem("login") === true) {
         localStorage.setItem("token", newToken);
         console.log("afterwarelink", newToken);
       }
