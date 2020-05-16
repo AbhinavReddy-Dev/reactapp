@@ -69,13 +69,17 @@ const RootQuery = new GraphQLObjectType({
     },
     todos: {
       type: new GraphQLList(TodoType),
-      resolve(parent, args, req, res) {
+      async resolve(parent, args, req, res) {
         console.log("todos list", req.isAuth, req.userId);
-        if (req.isAuth) {
-          console.log("todos data", req.userId);
-          return Todo.find({ owner_id: req.userId });
+        try {
+          if (req.isAuth) {
+            console.log("todos data", req.userId);
+            return Todo.find({ owner_id: req.userId });
+          }
+          throw new Error("Not Authorized");
+        } catch (error) {
+          console.log(error);
         }
-        throw new Error("Not Authorized");
       },
     },
     login: {
@@ -102,11 +106,11 @@ const RootQuery = new GraphQLObjectType({
         });
         const [token, refreshToken] = await createTokens(user);
         console.log("from login");
-        console.log({
-          id: user._id,
-          token,
-          refreshToken,
-        });
+        // console.log({
+        //   id: user._id,
+        //   token,
+        //   refreshToken,
+        // });
 
         const tokenData = {
           id: user._id,
@@ -129,14 +133,29 @@ const RootQuery = new GraphQLObjectType({
       type: AuthType,
       async resolve(parent, args, req, res) {
         var user;
-        if (req.isAuth) {
+        if (req.isAuth && req.userId) {
           console.log("userId", req.userId);
           user = await User.findById(req.userId);
+          const [token, refreshToken] = await createTokens(user);
+          console.log("from userCheck");
+          console.log({
+            id: user._id,
+            token,
+            refreshToken,
+          });
+
+          const tokenData = {
+            id: user._id,
+            token,
+            sessionExpiration: 300,
+          };
+
+          return tokenData;
         }
         // console.log(user);
         // console.log(args.password, user.password);
         if (!user) {
-          console.log("not user");
+          console.log("not user in user check");
           throw new Error("no user Invalid Credentials");
         }
         // bcrypt.compare(args.password, user.password, (err, isEqual) => {
@@ -145,21 +164,6 @@ const RootQuery = new GraphQLObjectType({
         //     throw new Error("not equal Invalid Credentials");
         //   }
         // });
-        const [token, refreshToken] = await createTokens(user);
-        console.log("from userCheck");
-        console.log({
-          id: user._id,
-          token,
-          refreshToken,
-        });
-
-        const tokenData = {
-          id: user._id,
-          token,
-          sessionExpiration: 300,
-        };
-
-        return tokenData;
       },
     },
     //

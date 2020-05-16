@@ -3,12 +3,14 @@ const { createTokens, refreshTokens } = require("./auth-func");
 
 module.exports = async (req, res, next) => {
   const authHeader = req.get("Authorization");
+  const authtoken = authHeader.split(" ")[1];
+
   console.log("Authheader", authHeader);
 
   // Checking cookie to generate new token for the clientside js memory variable everytime a new request is made
 
   console.log("cookie token", req.cookies["login"]);
-  console.log(req.path, req.query);
+  console.log(req.path, req.headers);
   if (req.cookies["login"]) {
     var cookieToken = req.cookies["login"];
     var token = await refreshTokens(cookieToken);
@@ -31,7 +33,7 @@ module.exports = async (req, res, next) => {
     req.isAuth = false;
     return next();
   }
-  const authtoken = authHeader.split(" ")[1];
+  // const authtoken = authHeader.split(" ")[1];
   if (!authtoken || authtoken == " ") {
     console.log("from not token");
     req.isAuth = false;

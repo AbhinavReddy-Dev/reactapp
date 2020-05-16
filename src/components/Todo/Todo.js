@@ -10,22 +10,49 @@ export const Todo = () => {
   const loginToken = useSelector((state) => state.login);
   console.log("Login Token from Todo", loginToken);
   const dispatch = useDispatch();
-  const todosData = useLazyQuery(TodosQuery);
+  const todosData = useQuery(TodosQuery);
+  // console.log(todosData);
+  // useEffect(() => {
+  //   // try {
+  //   if (todosData.data) {
+  //     // console.log("data not loading");
+  //     var mongoData = todosData.data;
+  //     console.log("todos data now available", mongoData.todos);
+  //     dispatch({
+  //       type: "TODO_LIST",
+  //       payload: mongoData.todos,
+  //     });
+  //   }
+  //   if (todosData.error) {
+  //     console.log(todosData.error);
+  //   }
+  //   // } catch (e) {
+  //   //   console.log(e.graphQLErrors);
+  //   // }
+  // }, [todosData, dispatch]);
+
   var isLoggedin = localStorage.getItem("login");
 
   // console.log(todosData);
   useEffect(() => {
-    if (isLoggedin) {
-      // console.log("data not loading");
-      todosData();
-      var mongoData = todosData.data;
-      console.log("todos data now available", mongoData.todos);
-      dispatch({
-        type: "TODO_LIST",
-        payload: mongoData.todos,
-      });
+    try {
+      if (todosData.data) {
+        // console.log("data not loading");
+        // todosData;
+        var mongoData = todosData.data;
+        console.log("todos data now available", mongoData.todos);
+        dispatch({
+          type: "TODO_LIST",
+          payload: mongoData.todos,
+        });
+      }
+      if (todosData.error) {
+        console.log(todosData.error);
+      }
+    } catch (e) {
+      console.log(e);
     }
-  }, [todosData, dispatch, isLoggedin]);
+  }, [todosData, dispatch]);
 
   return (
     <div className="todo">

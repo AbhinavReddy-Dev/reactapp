@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { TodoItem } from "../TodoItem/TodoItem";
 import "./TodoList.css";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { store } from "../../index";
 
 export const TodoList = () => {
   // useSelector from react-redux to access particular data object in the store state for the initial render of component data when there is only one reducer
-  // const initialTodos = useSelector((state) => state.todos);
-  // const initialTodos = store.getState().todos.todos;
-  // console.log(todos);
+  // const initialTodos = useSelector((store) => store.todos.todos);
+  const initialTodos = store.getState().todos.todos;
+  console.log(initialTodos);
   // useState to update the todos within the component
-  const [todoslist, setTodos] = useState([]);
+  const [todoslist, setTodos] = useState(initialTodos);
 
   // Separating checked todos and unchecked todos
   const [todosDone, settodosDone] = useState(

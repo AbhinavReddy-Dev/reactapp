@@ -19,12 +19,14 @@ import {
 // console.log("Login Token from app", loginToken);
 export var loginToken;
 export function loginSetToken(token) {
-  loginToken = token;
-  console.log("loginToken", loginToken);
+  // loginToken = token;
+  // localStorage.setItem("token", token);
+
+  console.log("login Token", token);
 }
 export function logoutSetToken() {
-  loginToken = null;
-  console.log("logout token", loginToken);
+  // loginToken = null;
+  // console.log("logout token", loginToken);
 }
 // Initial State of the data tree for the application
 export const InitialStateTodos = {
@@ -33,7 +35,11 @@ export const InitialStateTodos = {
   loading: undefined,
 };
 export const InitialStateLogin = {
-  token: null,
+  isLoggedin: Boolean,
+  token:
+    localStorage.getItem("token") != ("null" || null)
+      ? localStorage.getItem("token")
+      : null,
   userId: null,
   sessionExpiration: null,
 };
@@ -49,7 +55,8 @@ export const store = createStore(allReducers);
 const authMiddleware = new ApolloLink((operation, forward) => {
   console.log("from middleware 1", loginToken);
   // const token = loginToken;
-
+  loginToken = localStorage.getItem("token");
+  console.log("from middleware 1", loginToken);
   operation.setContext({
     headers: {
       authorization: loginToken ? "Bearer " + loginToken : "Bearer",
@@ -76,7 +83,8 @@ const afterwareLink = new ApolloLink((operation, forward) => {
     if (headers) {
       const newToken = headers.get("x-token");
       if (newToken) {
-        loginSetToken(newToken);
+        // loginSetToken(newToken);
+        localStorage.setItem("token", newToken);
         console.log("afterwarelink", newToken);
       }
     }
