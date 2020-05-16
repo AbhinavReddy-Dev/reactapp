@@ -58,6 +58,7 @@ function App() {
           <NavBar />
           <Switch>
             {!loginToken && <Redirect from="/" to="/login" exact></Redirect>}
+            {loginToken && <Redirect from="/" to="/todos" exact></Redirect>}
             {console.log(loginToken)}
             {loginToken && (
               <Redirect from="/login" to="/todos" exact></Redirect>

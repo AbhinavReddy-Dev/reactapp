@@ -35,22 +35,24 @@ export const Todo = () => {
 
   // console.log(todosData);
   useEffect(() => {
-    try {
-      if (todosData.data) {
-        // console.log("data not loading");
-        // todosData;
-        var mongoData = todosData.data;
-        console.log("todos data now available", mongoData.todos);
-        dispatch({
-          type: "TODO_LIST",
-          payload: mongoData.todos,
-        });
+    if (loginToken) {
+      try {
+        if (todosData.data) {
+          // console.log("data not loading");
+          // todosData;
+          var mongoData = todosData.data;
+          console.log("todos data now available", mongoData.todos);
+          dispatch({
+            type: "TODO_LIST",
+            payload: mongoData.todos,
+          });
+        }
+        if (todosData.error) {
+          console.log(todosData.error);
+        }
+      } catch (e) {
+        console.log(e);
       }
-      if (todosData.error) {
-        console.log(todosData.error);
-      }
-    } catch (e) {
-      console.log(e);
     }
   }, [todosData, dispatch]);
 
