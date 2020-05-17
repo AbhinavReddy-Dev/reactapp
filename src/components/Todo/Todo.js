@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "./Todo.css";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AddTodo } from "../AddTodo/AddTodo";
 import { TodoList } from "../TodoList/TodoList";
 import { TodosQuery } from "../../Queries/queries";
@@ -34,9 +34,9 @@ export const Todo = () => {
 
   return (
     <div className="todo">
-      <h1>Your Todos</h1>
+      <h1>Todos 🔔</h1>
       <AddTodo />
-      {/* Below ternary is mandatory to render the data recieved from GraphQL */}
+      {/* Below ternary is mandatory to render the data recieved from GraphQL else it will throw an error while loading the data */}
       {todosData.loading ? <p>Data Loading...</p> : <TodoList />}
     </div>
   );

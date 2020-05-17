@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import { NavBar } from "../src/components/NavBar/NavBar";
 import { Todo } from "./components/Todo/Todo";
@@ -6,9 +6,17 @@ import { LoginSignup } from "./components/Login/LoginSignup";
 import todoimg from "../src/components/assets/todoimg.png";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { store } from "../src/index";
 
 function App() {
-  // const loginToken = useSelector((store) => store.login.token);
+  const [loginToken, setLoginToken] = useState(
+    useSelector((store) => store.login.token)
+  );
+  store.subscribe(() => {
+    const token = store.getState().login.token;
+    // setTodos, settodosDone, settodosCurrent staying updated after every store state update
+    setLoginToken(token);
+  });
 
   // console.log("on refresh from app", loginToken);
 
@@ -18,24 +26,16 @@ function App() {
         <BrowserRouter>
           <NavBar />
           <Switch>
-            {!useSelector((store) => store.login.token) && (
-              <Redirect from="/" to="/login" exact></Redirect>
-            )}
-            {useSelector((store) => store.login.token) && (
-              <Redirect from="/" to="/todos" exact></Redirect>
-            )}
-            {useSelector((store) => store.login.token) && (
+            {!loginToken && <Redirect from="/" to="/login" exact></Redirect>}
+            {loginToken && <Redirect from="/" to="/todos" exact></Redirect>}
+            {loginToken && (
               <Redirect from="/login" to="/todos" exact></Redirect>
             )}
-            {!useSelector((store) => store.login.token) && (
+            {!loginToken && (
               <Redirect from="/todos" to="/login" exact></Redirect>
             )}
-            {!useSelector((store) => store.login.token) && (
-              <Route path="/login" component={LoginSignup} />
-            )}
-            {useSelector((store) => store.login.token) && (
-              <Route path="/todos" component={Todo} />
-            )}
+            {!loginToken && <Route path="/login" component={LoginSignup} />}
+            {loginToken && <Route path="/todos" component={Todo} />}
           </Switch>
         </BrowserRouter>
         <img src={todoimg} alt="todoimg"></img>

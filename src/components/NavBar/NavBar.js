@@ -5,11 +5,17 @@ import { useSelector } from "react-redux";
 import { client } from "../../index";
 import { useLazyQuery } from "@apollo/react-hooks";
 import { LogoutQuery } from "../../Queries/queries";
+import { store } from "../../index";
 
 export const NavBar = () => {
   const [loginToken, setLoginToken] = useState(
     useSelector((store) => store.login.token)
   );
+  store.subscribe(() => {
+    const token = store.getState().login.token;
+    // setTodos, settodosDone, settodosCurrent staying updated after every store state update
+    setLoginToken(token);
+  });
   console.log(loginToken);
   // useSelector((store) => console.log("from navbar store", store));
   const dispatch = useDispatch();
@@ -49,7 +55,7 @@ export const NavBar = () => {
           🤦🏻‍♂️
         </span>
       </h1>
-      {useSelector((store) => store.login.token) && (
+      {loginToken && (
         <button className="nav-bar-button" onClick={logoutHandle}>
           Logout
         </button>
