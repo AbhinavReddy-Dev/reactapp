@@ -34,7 +34,12 @@ export const Todo = () => {
 
   return (
     <div className="todo">
-      <h1>Todos 🔔</h1>
+      <h1>
+        Todos{" "}
+        <span role="img" aria-label="jsx-a11y/accessible-emoji">
+          🔔
+        </span>
+      </h1>
       <AddTodo />
       {/* Below ternary is mandatory to render the data recieved from GraphQL else it will throw an error while loading the data */}
       {todosData.loading ? <p>Data Loading...</p> : <TodoList />}
