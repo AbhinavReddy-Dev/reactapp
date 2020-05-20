@@ -80,9 +80,7 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 //
 
 // Apollo Client to connect to the server side GrapghQL queries and mutations
-const httpLink = new HttpLink({
-  uri: "https://git.heroku.com/anothertodoapp7.git",
-});
+const httpLink = new HttpLink({ uri: "http://localhost:5000/graphql" });
 export const client = new ApolloClient({
   link: ApolloLink.from([authMiddleware, afterwareLink, httpLink]),
   cache: new InMemoryCache(),
