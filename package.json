@@ -33,7 +33,7 @@
     "client": "npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "https://anothertodoapp7.herokuapp.com",
   "eslintConfig": {
     "extends": "react-app"
   },
