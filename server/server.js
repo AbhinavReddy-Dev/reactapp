@@ -6,13 +6,15 @@ const todos_schema = require("./graphql/todos");
 const cors = require("cors");
 const app = express();
 const isAuth = require("../server/middleware/is-auth");
+require("dotenv").config();
 
 // Mongoose collection connection, can be made secure using dotenv and store in an environment variable
 mongoose
-  .connect(
-    "mongodb+srv://singularityDev:akshitha123@singularitydev-lekkm.mongodb.net/todoapp?retryWrites=true&w=majority",
-    { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false }
-  )
+  .connect(process.env.DB_SECRET, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
   .catch((error) => {
     console.log(error.name, error.message);
   });
@@ -23,7 +25,7 @@ mongoose.connection.once("open", () => {
 
 // cors to let apollo client GrapghQL requests access server side GraphQL schemas and resolvers
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "https://anothertodoapp.netlify.app",
   credentials: true, // <-- REQUIRED backend setting for cookies
 };
 app.use(cors(corsOptions));
@@ -39,8 +41,7 @@ app.use(
   })
 );
 // Express listening on a port to run server side
-const port = 5000;
-app.listen(port, () => {
+app.listen(process.env.PORT, () => {
   console.log(" 🚀 server lauched on launch port ", port);
 });
 app.on("listening", function () {

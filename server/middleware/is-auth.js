@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { refreshTokens } = require("./auth-func");
+require("dotenv").config();
 
 module.exports = async (req, res, next) => {
   const authHeader = req.get("Authorization");
@@ -17,7 +18,7 @@ module.exports = async (req, res, next) => {
     console.log("new token because of cookies", token);
     res.set("Access-Control-Expose-Headers", "x-token");
     res.set("x-token", token);
-    cookieToken = jwt.verify(cookieToken, "supersecret123");
+    cookieToken = jwt.verify(cookieToken, process.env.TOKEN_SECRET);
     req.isAuth = true;
     req.userId = cookieToken.userId;
     return next();

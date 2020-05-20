@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
+require("dotenv").config();
 
 //
 // Func to create tokens
@@ -7,14 +8,18 @@ const User = require("../models/user");
 exports.createTokens = async (user) => {
   const token = jwt.sign(
     { userId: user._id, email: user.email },
-    "supersecret123",
+    process.env.TOKEN_SECRET,
     {
       expiresIn: 300,
     }
   );
-  const refreshToken = jwt.sign({ userId: user._id }, "supersecret123", {
-    expiresIn: "7d",
-  });
+  const refreshToken = jwt.sign(
+    { userId: user._id },
+    process.env.TOKEN_SECRET,
+    {
+      expiresIn: "7d",
+    }
+  );
   console.log({
     id: user._id,
     token,
@@ -29,7 +34,7 @@ exports.createTokens = async (user) => {
 //
 exports.refreshTokens = async (refreshToken) => {
   try {
-    const decodedToken = jwt.verify(refreshToken, "supersecret123");
+    const decodedToken = jwt.verify(refreshToken, process.env.TOKEN_SECRET);
 
     console.log("from refreshTokens", decodedToken.userId);
 
@@ -37,7 +42,7 @@ exports.refreshTokens = async (refreshToken) => {
 
     const token = jwt.sign(
       { userId: user._id, email: user.email },
-      "supersecret123",
+      process.env.TOKEN_SECRET,
       {
         expiresIn: 300,
       }
