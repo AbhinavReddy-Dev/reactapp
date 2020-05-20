@@ -25,7 +25,7 @@ mongoose.connection.once("open", () => {
 
 // cors to let apollo client GrapghQL requests access server side GraphQL schemas and resolvers
 var corsOptions = {
-  origin: "https://localhost:3000",
+  origin: "http://localhost:3000",
   credentials: true, // <-- REQUIRED backend setting for cookies
 };
 app.use(cors(corsOptions));
@@ -42,8 +42,8 @@ app.use(
 );
 // Express listening on a port to run server side
 const port = 5000;
-app.listen(process.env.PORT, () => {
-  console.log(" 🚀 server lauched on launch port ", port);
+app.listen(port, () => {
+  console.log(" 🚀 server lauched on launch port ");
 });
 app.on("listening", function () {
   console.log("ok, server is running fine 🟢");
