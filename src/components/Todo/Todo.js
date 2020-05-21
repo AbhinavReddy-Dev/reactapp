@@ -28,6 +28,8 @@ export const Todo = () => {
       }
     } catch (e) {
       console.log(e);
+      localStorage.setItem("login", false);
+      localStorage.setItem("token", null);
     }
     // }
   }, [todosData, dispatch]);
