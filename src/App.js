@@ -5,7 +5,13 @@ import { Todo } from "./components/Todo/Todo";
 import { LoginSignup } from "./components/Login/LoginSignup";
 import todoimg from "../src/components/assets/todoimg.png";
 import { useSelector } from "react-redux";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import {
+  HashRouter,
+  BrowserRouter,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import { store } from "../src/index";
 
 function App() {
@@ -23,7 +29,7 @@ function App() {
   return (
     <div className="bghalf-one">
       <div className="container">
-        <BrowserRouter>
+        <HashRouter>
           <NavBar />
           <Switch>
             {!loginToken && <Redirect from="/" to="/login" exact></Redirect>}
@@ -37,7 +43,7 @@ function App() {
             {!loginToken && <Route path="/login" component={LoginSignup} />}
             {loginToken && <Route path="/todos" component={Todo} />}
           </Switch>
-        </BrowserRouter>
+        </HashRouter>
         <img src={todoimg} alt="todoimg"></img>
       </div>
     </div>
