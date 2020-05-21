@@ -23,7 +23,7 @@ export const Todo = () => {
           payload: mongoData.todos,
         });
       }
-      if (todosData.error) {
+      if (todosData.error || todosData.data === null) {
         console.log(todosData.error);
         localStorage.setItem("login", false);
         localStorage.setItem("token", null);
@@ -34,12 +34,12 @@ export const Todo = () => {
       }
     } catch (e) {
       console.log(e);
-      // localStorage.setItem("login", false);
-      // localStorage.setItem("token", null);
-      // dispatch({
-      //   type: "LOGOUT",
-      //   payload: {},
-      // });
+      localStorage.setItem("login", false);
+      localStorage.setItem("token", null);
+      dispatch({
+        type: "LOGOUT",
+        payload: {},
+      });
     }
     // }
   }, [todosData, dispatch]);
