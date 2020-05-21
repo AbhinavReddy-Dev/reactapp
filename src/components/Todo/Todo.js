@@ -25,15 +25,21 @@ export const Todo = () => {
       }
       if (todosData.error) {
         console.log(todosData.error);
+        localStorage.setItem("login", false);
+        localStorage.setItem("token", null);
+        dispatch({
+          type: "LOGOUT",
+          payload: {},
+        });
       }
     } catch (e) {
       console.log(e);
-      localStorage.setItem("login", false);
-      localStorage.setItem("token", null);
-      dispatch({
-        type: "LOGOUT",
-        payload: {},
-      });
+      // localStorage.setItem("login", false);
+      // localStorage.setItem("token", null);
+      // dispatch({
+      //   type: "LOGOUT",
+      //   payload: {},
+      // });
     }
     // }
   }, [todosData, dispatch]);
