@@ -30,6 +30,10 @@ export const Todo = () => {
       console.log(e);
       localStorage.setItem("login", false);
       localStorage.setItem("token", null);
+      dispatch({
+        type: "LOGOUT",
+        payload: {},
+      });
     }
     // }
   }, [todosData, dispatch]);
