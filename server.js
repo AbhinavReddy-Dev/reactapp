@@ -5,7 +5,8 @@ const graphqlHTTP = require("express-graphql");
 const todos_schema = require("./graphql/todos");
 const cors = require("cors");
 const app = express();
-const isAuth = require("../server/middleware/is-auth");
+const isAuth = require("./middleware/is-auth");
+const path = require("path");
 require("dotenv").config();
 
 // Mongoose collection connection, can be made secure using dotenv and store in an environment variable
@@ -25,8 +26,8 @@ mongoose.connection.once("open", () => {
 
 // cors to let apollo client GrapghQL requests access server side GraphQL schemas and resolvers
 var corsOptions = {
-  // origin: "https://localhost:3000",
-  origin: "https://anothertodoapp.netlify.com",
+  // origin: "https://anothertodoapp.netlify.app",
+  origin: "http://localhost:3000",
   credentials: true, // <-- REQUIRED backend setting for cookies
 };
 app.use(cors(corsOptions));
@@ -41,10 +42,18 @@ app.use(
     graphiql: true,
   })
 );
+
+// for production
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client", "build", "index.html")); // relative path
+  });
+}
 // Express listening on a port to run server side
-const port = 5000;
-app.listen(port, () => {
-  console.log(" 🚀 server lauched on launch port ");
+app.listen(process.env.PORT, () => {
+  console.log(" 🚀 server lauched on launch port " + process.env.PORT);
 });
 app.on("listening", function () {
   console.log("ok, server is running fine 🟢");

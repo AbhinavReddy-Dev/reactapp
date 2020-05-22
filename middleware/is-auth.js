@@ -23,7 +23,7 @@ module.exports = async (req, res, next) => {
     req.userId = cookieToken.userId;
     return next();
   }
-  if (req.cookies["login"] == (undefined || " ")) {
+  if (req.cookies["login"] == undefined || req.cookies["login"] === " ") {
     req.isAuth = false;
     return next();
   }
@@ -50,10 +50,6 @@ module.exports = async (req, res, next) => {
   }
   if (!decodedToken) {
     console.log("from not decodedtoken");
-    req.isAuth = false;
-    return next();
-  }
-  if (req.cookies["login"] == (undefined || " ")) {
     req.isAuth = false;
     return next();
   }

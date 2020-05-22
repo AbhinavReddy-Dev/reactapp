@@ -46,7 +46,9 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   console.log("from middleware 1", loginToken);
   operation.setContext({
     headers: {
-      authorization: loginToken ? "Bearer " + loginToken : "Bearer",
+      authorization: localStorage.getItem("token")
+        ? "Bearer " + localStorage.getItem("token")
+        : "Bearer",
     },
     credentials: "include",
   });
@@ -68,6 +70,7 @@ const afterwareLink = new ApolloLink((operation, forward) => {
     } = context;
 
     if (headers) {
+      console.log("Headers here", headers.get("x-token"));
       const newToken = headers.get("x-token");
       if (newToken && localStorage.getItem("login") === true) {
         localStorage.setItem("token", newToken);
@@ -80,10 +83,10 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 //
 
 // Apollo Client to connect to the server side GrapghQL queries and mutations
-// const httpLink = new HttpLink({ uri: "http://localhost:5000/graphql" });
-const httpLink = new HttpLink({
-  uri: "https://anothertodoapp7.herokuapp.com/graphql",
-});
+const httpLink = new HttpLink({ uri: `http://localhost:5000/graphql` });
+// const httpLink = new HttpLink({
+// uri: "https://anothertodoapp7.herokuapp.com/graphql",
+// });
 export const client = new ApolloClient({
   link: ApolloLink.from([authMiddleware, afterwareLink, httpLink]),
   cache: new InMemoryCache(),

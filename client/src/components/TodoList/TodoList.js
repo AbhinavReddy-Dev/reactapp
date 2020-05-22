@@ -19,11 +19,15 @@ export const TodoList = () => {
 
   // Subscribing to the store to stay updated with the state after initial state render
   store.subscribe(() => {
-    const todoslist = store.getState().todos.todos;
+    var todoslist = store.getState().todos.todos;
     // setTodos, settodosDone, settodosCurrent staying updated after every store state update
-    setTodos(todoslist);
-    settodosDone(todoslist.filter((todo) => todo.checked === true));
-    settodosCurrent(todoslist.filter((todo) => todo.checked !== true));
+    try {
+      setTodos(todoslist);
+      settodosDone(todoslist.filter((todo) => todo.checked === true));
+      settodosCurrent(todoslist.filter((todo) => todo.checked !== true));
+    } catch (e) {
+      throw new Error(e);
+    }
   });
   return (
     <div className="todo-list">
