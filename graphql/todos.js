@@ -121,36 +121,6 @@ const RootQuery = new GraphQLObjectType({
         return tokenData;
       },
     },
-    userCheck: {
-      type: AuthType,
-      async resolve(parent, args, req, res) {
-        var user;
-        if (req.isAuth && req.userId) {
-          console.log("userId", req.userId);
-          user = await User.findById(req.userId);
-          const [token, refreshToken] = await createTokens(user);
-          console.log("from userCheck");
-          console.log({
-            id: user._id,
-            token,
-            refreshToken,
-          });
-
-          const tokenData = {
-            id: user._id,
-            token,
-            sessionExpiration: 300,
-          };
-
-          return tokenData;
-        }
-
-        if (!user) {
-          console.log("not user in user check");
-          throw new Error("no user Invalid Credentials");
-        }
-      },
-    },
     //
     logout: {
       type: GraphQLString,
@@ -175,7 +145,7 @@ const Mutation = new GraphQLObjectType({
         email: { type: GraphQLString },
         phone: { type: GraphQLString },
       },
-      async resolve(parent, args) {
+      async resolve(parent, args, req, res) {
         console.log("hey");
         let user = await User.findOne({ email: args.email });
         if (user) {
