@@ -45,7 +45,7 @@ select {
   border-radius: 4px;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 4250px) {
   .todo h1 {
     font-size: large;
   }

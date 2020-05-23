@@ -16,17 +16,17 @@ export const NavBar = () => {
     // setTodos, settodosDone, settodosCurrent staying updated after every store state update
     setLoginToken(token);
   });
-  console.log(loginToken);
+  // console.log(loginToken);
   // useSelector((store) => console.log("from navbar store", store));
   const dispatch = useDispatch();
   let [logout, { called, loading, data }] = useLazyQuery(LogoutQuery);
 
   useEffect(() => {
     if (loading && called) {
-      console.log("logging you out");
+      // console.log("logging you out");
     }
     if (!loading && data) {
-      console.log("logout, yo!");
+      // console.log("logout, yo!");
       setLoginToken(null);
       dispatch({
         type: "LOGOUT",

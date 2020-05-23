@@ -24,19 +24,22 @@ select {
 .input-button {
   width: 9.5vw;
   height: 3vh;
-  margin: 1vh auto;
-  padding: 6px auto;
+  margin: 0.7vh auto;
+  padding: 0.2vh 0vw;
   color: white;
-  font-size: large;
+  font-size: medium;
   background-color: #0cab5b;
   border-radius: 4px;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 425px) {
   .todo-add select {
     width: 80vw;
     height: 5vh;
     border: lightgray 0.5px solid;
     background-color: none;
+  }
+  .todo-add .input-button {
+    width: 25vw;
   }
 }

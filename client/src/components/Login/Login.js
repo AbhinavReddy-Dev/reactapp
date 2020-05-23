@@ -20,10 +20,10 @@ export const Login = () => {
 
   useEffect(() => {
     if (loading && called) {
-      console.log("login token loading");
+      // console.log("login token loading");
     }
     if (!loading && data) {
-      console.log("login happened", data.login);
+      // console.log("login happened", data.login);
       dispatch({
         type: "LOGIN_SIGNUP",
         payload: data.login,
@@ -33,7 +33,7 @@ export const Login = () => {
 
   const handleLogin = (e) => {
     e.preventDefault();
-    console.log(email, password);
+    // console.log(email, password);
     try {
       login({
         variables: {

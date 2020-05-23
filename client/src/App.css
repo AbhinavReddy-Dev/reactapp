@@ -23,7 +23,7 @@ body {
   justify-content: center;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 425px) {
   .bghalf-one img {
     display: none;
   }

@@ -40,7 +40,7 @@ li {
 .todo-item button:hover {
   opacity: 1;
 }
-@media (max-width: 320px) {
+@media (max-width: 425px) {
   .todo-item button {
     font-size: 12px;
     margin-top: 2vh;

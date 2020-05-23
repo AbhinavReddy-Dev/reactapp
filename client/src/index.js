@@ -41,9 +41,9 @@ const allReducers = combineReducers({
 export const store = createStore(allReducers);
 
 const authMiddleware = new ApolloLink((operation, forward) => {
-  console.log("from middleware 1", loginToken);
+  // console.log("from middleware 1", loginToken);
   loginToken = localStorage.getItem("token");
-  console.log("from middleware 1", loginToken);
+  // console.log("from middleware 1", loginToken);
   operation.setContext({
     headers: {
       authorization: localStorage.getItem("token")
@@ -52,29 +52,29 @@ const authMiddleware = new ApolloLink((operation, forward) => {
     },
     credentials: "include",
   });
-  console.log("from middleware 2");
+  // console.log("from middleware 2");
 
   return forward(operation);
 });
 
 // This middleware checks for headers and set the localstorage token value which wll again be used to replace authorization header on every request to server
 const afterwareLink = new ApolloLink((operation, forward) => {
-  console.log("afterwarelink start");
+  // console.log("afterwarelink start");
   return forward(operation).map((response) => {
-    console.log("response", response);
+    // console.log("response", response);
     const context = operation.getContext();
-    console.log("context", context);
+    // console.log("context", context);
 
     const {
       response: { headers },
     } = context;
 
     if (headers) {
-      console.log("Headers here", headers.get("x-token"));
+      // console.log("Headers here", headers.get("x-token"));
       const newToken = headers.get("x-token");
       if (newToken && localStorage.getItem("login") === true) {
         localStorage.setItem("token", newToken);
-        console.log("afterwarelink", newToken);
+        // console.log("afterwarelink", newToken);
       }
     }
     return response;

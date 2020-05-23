@@ -18,10 +18,10 @@ h1 {
   margin: 3vh auto 2vh auto;
 }
 
-@media (max-width: 320px) {
+@media (max-width: 425px) {
   .todo {
     min-height: 60vh;
     width: 90vw;
-    margin-top: 7vh;
+    margin-top: 10vh;
   }
 }

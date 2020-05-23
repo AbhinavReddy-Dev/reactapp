@@ -14,7 +14,7 @@ export const Signup = () => {
 
   // Using useQuery from apollo/react-hooks to get the data from mongodb through server side GraphQL
   const [addUser] = useMutation(AddUserQuery);
-  console.log(addUser);
+  // console.log(addUser);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -27,7 +27,7 @@ export const Signup = () => {
       },
     });
 
-    console.log("signup", newUser);
+    // console.log("signup", newUser);
 
     dispatch({
       type: "LOGIN_SIGNUP",

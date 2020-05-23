@@ -17,7 +17,7 @@ export const Todo = () => {
     try {
       if (!todosData.loading && todosData.data) {
         var mongoData = todosData.data;
-        console.log("todos data now available", mongoData.todos);
+        // console.log("todos data now available", mongoData.todos);
         dispatch({
           type: "TODO_LIST",
           payload: mongoData.todos,

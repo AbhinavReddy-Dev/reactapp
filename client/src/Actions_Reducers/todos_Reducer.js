@@ -5,7 +5,7 @@ export default (state = InitialStateTodos, action) => {
   // console.log("from t red initialstate", InitialStateTodos);
   switch (action.type) {
     case "TODO_LIST":
-      console.log("from reducer", action.payload);
+      // console.log("from reducer", action.payload);
       return {
         ...state,
         todos: action.payload,
@@ -20,7 +20,7 @@ export default (state = InitialStateTodos, action) => {
         (todo) => todo.id !== action.payload.id
       );
       const todoCheck = { ...action.payload, checked: !action.payload.checked };
-      console.log("reducer todocheck", todoCheck.checked);
+      // console.log("reducer todocheck", todoCheck.checked);
       tempTodos.push(todoCheck);
       // console.log("reducer toggle check", action.payload.checked);
       return {
@@ -28,8 +28,8 @@ export default (state = InitialStateTodos, action) => {
         todos: tempTodos,
       };
     case "TODO_DELETE":
-      console.log("todo del");
-      console.log(action.payload);
+      // console.log("todo del");
+      // console.log(action.payload);
       return {
         ...state,
         todos: state.todos.filter((todo) => todo.name !== action.payload),
