@@ -26,5 +26,16 @@ h3 {
 p {
   padding-top: 0.5vh;
   margin: auto;
-  letter-spacing: 1px;
+  letter-spacing: 0px;
+}
+@media (max-width: 320px) {
+  .todo-list {
+    width: 80vw;
+  }
+  h3 {
+    font-size: medium;
+  }
+  li {
+    font-size: medium;
+  }
 }

@@ -12,6 +12,7 @@
   margin: 1vh auto;
   font-size: medium;
   padding: 4px;
+  border: lightgray 0.5px solid;
 }
 select {
   margin: 1vh auto;
@@ -42,4 +43,32 @@ select {
   font-size: large;
   background-color: purple;
   border-radius: 4px;
+}
+
+@media (max-width: 320px) {
+  .todo h1 {
+    font-size: large;
+  }
+  .todo-add {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+  }
+  .input {
+    width: 80vw;
+    height: 5vh;
+    margin: 1vh auto;
+    font-size: medium;
+    padding: 4px;
+    border: slategray 1px solid;
+  }
+  .input-button {
+    width: 35vw;
+    height: 6vh;
+  }
+  .link-button {
+    width: 35vw;
+    height: 6vh;
+  }
 }

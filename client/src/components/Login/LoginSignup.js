@@ -9,7 +9,7 @@ export const LoginSignup = () => {
 
   return (
     <div className="todo">
-      <h1>Login/ Signup</h1>
+      <h1>{!loginToggle ? "Signup" : "Login"}</h1>
 
       {/* Below ternary is mandatory to render the Login or Signup component */}
       {loginToggle ? <Login /> : <Signup />}

@@ -22,3 +22,9 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 320px) {
+  .bghalf-one img {
+    display: none;
+  }
+}
