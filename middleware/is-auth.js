@@ -4,8 +4,11 @@ require("dotenv").config();
 
 module.exports = async (req, res, next) => {
   const authHeader = req.get("Authorization");
-  var authtoken = authHeader.split(" ");
-
+  try {
+    var authtoken = authHeader.split(" ");
+  } catch (e) {
+    console.log(e);
+  }
   if (authtoken.length < 2) {
     console.log("no Authheader token");
   }
