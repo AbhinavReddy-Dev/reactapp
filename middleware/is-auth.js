@@ -6,13 +6,13 @@ module.exports = async (req, res, next) => {
   const authHeader = req.get("Authorization");
   try {
     var authtoken = authHeader.split(" ");
+    if (authtoken.length < 2) {
+      console.log("no Authheader token");
+    }
+    authtoken = authtoken[1];
   } catch (e) {
     console.log(e);
   }
-  if (authtoken.length < 2) {
-    console.log("no Authheader token");
-  }
-  authtoken = authtoken[1];
 
   console.log("Authheader token", authHeader ? true : false);
 
