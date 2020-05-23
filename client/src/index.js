@@ -57,7 +57,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   return forward(operation);
 });
 
-//
+// This middleware checks for headers and set the localstorage token value which wll again be used to replace authorization header on every request to server
 const afterwareLink = new ApolloLink((operation, forward) => {
   console.log("afterwarelink start");
   return forward(operation).map((response) => {
@@ -83,10 +83,13 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 //
 
 // Apollo Client to connect to the server side GrapghQL queries and mutations
-const httpLink = new HttpLink({ uri: `http://localhost:5000/graphql` });
+const httpLink = new HttpLink({ uri: `/graphql` });
+//
+// For Netlify client deploy
 // const httpLink = new HttpLink({
 // uri: "https://anothertodoapp7.herokuapp.com/graphql",
 // });
+
 export const client = new ApolloClient({
   link: ApolloLink.from([authMiddleware, afterwareLink, httpLink]),
   cache: new InMemoryCache(),

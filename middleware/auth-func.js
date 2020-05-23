@@ -36,7 +36,7 @@ exports.refreshTokens = async (refreshToken) => {
   try {
     const decodedToken = jwt.verify(refreshToken, process.env.TOKEN_SECRET);
 
-    console.log("from refreshTokens", decodedToken.userId);
+    console.log("from refreshTokens", decodedToken.userId ? true : false);
 
     const user = await User.findById(decodedToken.userId);
 

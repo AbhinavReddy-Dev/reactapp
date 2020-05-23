@@ -27,9 +27,10 @@ mongoose.connection.once("open", () => {
 // cors to let apollo client GrapghQL requests access server side GraphQL schemas and resolvers
 var corsOptions = {
   // origin: "https://anothertodoapp.netlify.app",
-  origin: "http://localhost:3000",
+  // origin: "http://localhost:3000",
   credentials: true, // <-- REQUIRED backend setting for cookies
 };
+app.set("trust proxy", 1);
 app.use(cors(corsOptions));
 // app.use(cors());
 app.use(cookieParser());
