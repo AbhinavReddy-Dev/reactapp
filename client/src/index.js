@@ -95,6 +95,8 @@ export const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+// console.log(client.store.cache.data);
+
 ReactDOM.render(
   // ApolloProvider that lets the components interact with the client
   <Provider store={store}>

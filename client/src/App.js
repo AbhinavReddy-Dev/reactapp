@@ -20,6 +20,7 @@ function App() {
   );
   store.subscribe(() => {
     const token = store.getState().login.token;
+    console.log(store.getState().adduser.token);
     // console.log("login state at app.js", store.getState().login);
     // setTodos, settodosDone, settodosCurrent staying updated after every store state update
     setLoginToken(token);
@@ -28,24 +29,28 @@ function App() {
   // console.log("on refresh from app", loginToken);
 
   return (
-    <div className="bghalf-one">
-      <div className="container">
-        <HashRouter>
-          <NavBar />
-          <Switch>
-            {!loginToken && <Redirect from="/" to="/login" exact></Redirect>}
-            {loginToken && <Redirect from="/" to="/todos" exact></Redirect>}
-            {loginToken && (
-              <Redirect from="/login" to="/todos" exact></Redirect>
-            )}
-            {!loginToken && (
-              <Redirect from="/todos" to="/login" exact></Redirect>
-            )}
-            {!loginToken && <Route path="/login" component={LoginSignup} />}
-            {loginToken && <Route path="/todos" component={Todo} />}
-          </Switch>
-        </HashRouter>
-        <img src={todoimg} alt="todoimg"></img>
+    <div>
+      <div className="bghalf-one">
+        {" "}
+        <div />
+        <div className="container">
+          <HashRouter>
+            <NavBar />
+            <Switch>
+              {!loginToken && <Redirect from="/" to="/login" exact></Redirect>}
+              {loginToken && <Redirect from="/" to="/todos" exact></Redirect>}
+              {loginToken && (
+                <Redirect from="/login" to="/todos" exact></Redirect>
+              )}
+              {!loginToken && (
+                <Redirect from="/todos" to="/login" exact></Redirect>
+              )}
+              {!loginToken && <Route path="/login" component={LoginSignup} />}
+              {loginToken && <Route path="/todos" component={Todo} />}
+            </Switch>
+          </HashRouter>
+          <img src={todoimg} alt="todoimg"></img>
+        </div>
       </div>
     </div>
   );
