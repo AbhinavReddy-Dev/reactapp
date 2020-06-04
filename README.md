@@ -10,7 +10,7 @@
    `npm install`
 4. Now, go into the client folder then run the command
    `npm install`
-5. Now go to the main folder and then run the command
+5. Now go into the main directory and then run the command
    `npm run dev`
 
 All the components are styled in conventional way, css file is imported when required.
