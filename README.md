@@ -7,13 +7,18 @@
 2. Run commands
 
 `git clone git@github.com:singularityDev/reactapp.git`
+
 `cd reactapp`
+
 `npm install`
+
 `cd client && npm install`
+
 `cd ..`
 
 3. Run command to start the application
-   `npm run dev`
+
+`npm run dev`
 
 All the components are styled in conventional way, css file is imported when required.
 
