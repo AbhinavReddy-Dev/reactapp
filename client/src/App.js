@@ -20,7 +20,6 @@ function App() {
   );
   store.subscribe(() => {
     const token = store.getState().login.token;
-    console.log(store.getState().adduser.token);
     // console.log("login state at app.js", store.getState().login);
     // setTodos, settodosDone, settodosCurrent staying updated after every store state update
     setLoginToken(token);
