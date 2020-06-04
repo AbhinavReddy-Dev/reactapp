@@ -12,7 +12,6 @@ cd reactapp
 npm install
 cd client && npm install
 cd ..
-
 ```
 
 3. Run command to start the application
