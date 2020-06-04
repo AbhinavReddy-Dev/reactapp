@@ -20,6 +20,6 @@ cd ..
 
 All the components are styled in conventional way, css file is imported when required.
 
-GraphQL and Apollocient are used instead of REST API.
+GraphQL and Apollo client are used instead of REST API.
 
 /middleware folder has the code that verifies the user request and sets isAuth true if the user sends a verified token through authheader.
