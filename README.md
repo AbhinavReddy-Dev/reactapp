@@ -4,13 +4,13 @@
 
 1. Install node on your device
 
-2. Run command
+2. Run commands
    `git clone git@github.com:singularityDev/reactapp.git`
-3. Go into the folder and run commmand
+   `cd reactapp`
    `npm install`
-4. Now, go into the client folder then run the command
-   `npm install`
-5. Now go into the main directory and then run the command
+   `cd client && npm install`
+   `cd ..`
+3. Run command to start the application
    `npm run dev`
 
 All the components are styled in conventional way, css file is imported when required.
