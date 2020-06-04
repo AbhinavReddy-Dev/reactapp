@@ -6,15 +6,14 @@
 
 2. Run commands
 
-`git clone git@github.com:singularityDev/reactapp.git`
+```
+git clone git@github.com:singularityDev/reactapp.git
+cd reactapp
+npm install
+cd client && npm install
+cd ..
 
-`cd reactapp`
-
-`npm install`
-
-`cd client && npm install`
-
-`cd ..`
+```
 
 3. Run command to start the application
 
