@@ -36,6 +36,7 @@ export const TodoItem = ({ todo }) => {
     });
 
     // Store update dispatch
+    // one other way to dispatch is to use the available data as payload instead of waiting for the updated data from database to use as payload
     console.log("todoitem toggle check", checkToggle.data.checkTodo.checked);
     dispatch({
       type: "TODO_CHECKTOGGLE",

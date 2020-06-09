@@ -1,5 +1,14 @@
 **This is yet another todo app that can perform all CRUD actions. JWT tokens are used to make the authentication possible, one for remembering and generating new tokens and one for authheader to verify the user.**
 
+All the components are styled in conventional way, css file is imported when required.
+
+React Redux is also implemented.
+
+GraphQL and Apollo client are used instead of REST API.
+
+I tried to impelment my own authentication system using JWT and it is not a perfect implementation though, I tried my best not to use localStorage but for a token that's going to expire in a very short time is okay in this case.
+One improvement I will make is to blacklist the tokens once they're revoked.
+
 #### Steps to run this locally
 
 1. Install node on your device
@@ -18,10 +27,6 @@ cd ..
 
 `npm run dev`
 
-All the components are styled in conventional way, css file is imported when required.
+4. Run command below to make build
 
-React Redux is also implemented.
-
-GraphQL and Apollo client are used instead of REST API.
-
-/middleware folder has the code that verifies the user request and sets isAuth true if the user sends a verified token through authheader.
+`npm run build`

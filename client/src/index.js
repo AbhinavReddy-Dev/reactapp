@@ -42,7 +42,7 @@ export const store = createStore(allReducers);
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   // console.log("from middleware 1", loginToken);
-  loginToken = localStorage.getItem("token");
+  // loginToken = localStorage.getItem("token");
   // console.log("from middleware 1", loginToken);
   operation.setContext({
     headers: {
@@ -71,8 +71,11 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 
     if (headers) {
       // console.log("Headers here", headers.get("x-token"));
-      const newToken = headers.get("x-token");
-      if (newToken && localStorage.getItem("login") === true) {
+      var newToken = headers.get("x-token");
+      // console.log(localStorage.getItem("login"));
+      // console.log(headers.get("x-token"), localStorage.getItem("token"));
+
+      if (localStorage.getItem("login")) {
         localStorage.setItem("token", newToken);
         // console.log("afterwarelink", newToken);
       }
@@ -83,7 +86,12 @@ const afterwareLink = new ApolloLink((operation, forward) => {
 //
 
 // Apollo Client to connect to the server side GrapghQL queries and mutations
-const httpLink = new HttpLink({ uri: `/graphql` });
+//below httplink is for production using same server for client and serverside
+const httpLink = new HttpLink({ uri: "/graphql" });
+
+//below httplink is for running the app locally
+// const httpLink = new HttpLink({ uri: "http://localhost:5000/graphql" });
+
 //
 // For Netlify client deploy
 // const httpLink = new HttpLink({
@@ -102,7 +110,7 @@ ReactDOM.render(
   <Provider store={store}>
     <ApolloProvider client={client}>
       {/* Redux Provider that lets all ccomponents access the store which gets updated when useDispatch runs code inside Reducer's switch case */}
-      <App loginToken={loginToken} />
+      <App />
     </ApolloProvider>
   </Provider>,
   document.getElementById("root")

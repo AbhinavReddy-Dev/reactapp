@@ -27,6 +27,7 @@ export const TodoList = () => {
       settodosCurrent(todoslist.filter((todo) => todo.checked !== true));
     } catch (e) {
       throw new Error(e);
+      // console.log(e);
     }
   });
   return (
@@ -49,7 +50,7 @@ export const TodoList = () => {
         {todosCurrent.length > 0 ? (
           <ul>
             {todosCurrent.map((todo) => (
-              <TodoItem key={todo.id} todo={todo} />
+              <TodoItem key={todo.id + "1"} todo={todo} />
             ))}
           </ul>
         ) : (

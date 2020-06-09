@@ -9,12 +9,18 @@ module.exports = async (req, res, next) => {
     if (authtoken.length < 2) {
       console.log("no Authheader token");
     }
-    authtoken = authtoken[1];
+    authtoken = await authtoken[1];
+    if (authtoken) {
+      authtoken = jwt.verify(authtoken, "supersecret123");
+      req.isAuth = true;
+      req.userId = authtoken.userId;
+      // return next();
+    }
   } catch (e) {
     console.log(e);
   }
 
-  console.log("Authheader token", authHeader ? true : false);
+  console.log("Auth token", authtoken ? true : false, authtoken);
 
   // Checking cookie to generate new token for the clientside js memory variable everytime a new request is made to make it feel like the user is logged in
 
@@ -23,12 +29,12 @@ module.exports = async (req, res, next) => {
   if (req.cookies["login"]) {
     var cookieToken = req.cookies["login"];
     var token = await refreshTokens(cookieToken);
-    console.log("new token because of cookies");
+    console.log("new token because of cookies", token);
     res.set("Access-Control-Expose-Headers", "x-token");
     res.set("x-token", token);
     cookieToken = jwt.verify(cookieToken, process.env.TOKEN_SECRET);
-    req.isAuth = true;
-    req.userId = cookieToken.userId;
+    req.isAuth = req.isAuth || true;
+    req.userId = req.userId || cookieToken.userId;
     return next();
   }
   if (req.cookies["login"] == undefined || req.cookies["login"] === " ") {
